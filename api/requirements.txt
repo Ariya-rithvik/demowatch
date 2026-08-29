@@ -1,0 +1,29 @@
+# API / pipeline service
+
+# HTTP layer
+fastapi>=0.110
+uvicorn[standard]>=0.29
+pydantic>=2.6
+pydantic-settings>=2.2
+
+# Persistence. psycopg is used only when DATABASE_URL points at PostgreSQL;
+# SQLite (stdlib) covers local development.
+psycopg[binary]>=3.1
+psycopg-pool>=3.2
+
+# Object storage (S3-compatible, incl. Zerops object storage)
+boto3>=1.34
+
+# Browser automation - the crawler that produces the truth set
+playwright>=1.44
+
+# Narration. Edge TTS needs no API key, which is why the pipeline can produce a
+# real narrated video with nothing configured.
+edge-tts>=6.1
+
+# Frame preparation for element-focus zooms
+pillow>=10.2
+
+# Used by the explorer's analyzers
+networkx>=3.2
+loguru>=0.7

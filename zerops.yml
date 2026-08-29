@@ -1,0 +1,80 @@
+# Build and run configuration for each Zerops service.
+#
+# The api service is the interesting one: it drives a real Chromium through
+# Playwright and composites video with FFmpeg, so both have to be present in the
+# runtime image, not just at build time.
+
+zerops:
+  # ── API / pipeline ─────────────────────────────────────────────────────────
+  - setup: api
+    build:
+      base: python@3.11
+      os: ubuntu            # Chromium's shared libraries are not on alpine
+      prepareCommands:
+        - sudo apt-get update
+        # ffmpeg composites the video; the rest are Chromium's runtime deps.
+        - sudo apt-get install -y --no-install-recommends
+          ffmpeg ca-certificates fonts-liberation
+          libnss3 libnspr4 libatk1.0-0 libatk-bridge2.0-0 libcups2
+          libdrm2 libxkbcommon0 libxcomposite1 libxdamage1 libxfixes3
+          libxrandr2 libgbm1 libasound2 libpango-1.0-0 libcairo2
+      buildCommands:
+        - pip install --no-cache-dir -r api/requirements.txt
+        # Browsers land inside the deployed tree so the runtime container can find
+        # them; the default cache path is not carried across the build boundary.
+        - PLAYWRIGHT_BROWSERS_PATH=./api/.playwright python -m playwright install chromium
+      deployFiles:
+        - api
+      cache:
+        - api/.playwright
+    deploy:
+      readinessCheck:
+        httpGet:
+          port: 8080
+          path: /health
+        failureTimeout: 120   # first boot installs nothing but does run migrations
+    run:
+      base: python@3.11
+      os: ubuntu
+      ports:
+        - port: 8080
+          httpSupport: true
+      envVariables:
+        PORT: 8080
+        PYTHONUNBUFFERED: 1
+        PLAYWRIGHT_BROWSERS_PATH: /var/www/api/.playwright
+        # Artifacts are written here and mirrored to object storage.
+        ADIP_ARTIFACT_DIR: /var/www/artifacts
+        # Zerops exposes service credentials as ${service_KEY}.
+        DATABASE_URL: ${db_connectionString}
+        S3_BUCKET: ${storage_bucketName}
+        S3_ENDPOINT: ${storage_apiUrl}
+        S3_ACCESS_KEY: ${storage_accessKeyId}
+        S3_SECRET_KEY: ${storage_secretAccessKey}
+        # Bounded crawls: unbounded exploration of a large site took ~188s, which is
+        # too slow for someone evaluating the app interactively.
+        ADIP_EXPLORE_MAX_ACTIONS: 4
+        ADIP_EXPLORE_MAX_PAGES: 3
+        ADIP_EXPLORE_MAX_DEPTH: 1
+      initCommands:
+        - mkdir -p /var/www/artifacts
+      start: python -m uvicorn main:app --host 0.0.0.0 --port 8080 --app-dir api
+      healthCheck:
+        httpGet:
+          port: 8080
+          path: /health
+        execPeriod: 30
+        failureTimeout: 90
+
+  # ── Web / static UI ────────────────────────────────────────────────────────
+  # Served separately so a redeploy of the pipeline never takes the UI offline.
+  - setup: web
+    build:
+      base: static
+      buildCommands:
+        # The UI calls the API cross-origin; bake in the service's public URL.
+        - sed -i "s|__API_BASE__|${API_PUBLIC_URL}|g" web/index.html
+      deployFiles:
+        - web/~
+    run:
+      base: static

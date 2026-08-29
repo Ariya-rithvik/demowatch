@@ -1,0 +1,1786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Veridemo — Demo videos you can verify</title>
+
+<!-- Google Fonts: exact family match to veridemo.dev (Instrument Sans / Inter / JetBrains Mono / Caveat) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ===== CSS Variables — exact tokens from veridemo.dev ===== */
+:root {
+    --bg-primary: #f5f5f5;
+    --bg-white: #ffffff;
+    --bg-dark: #1a1a1a;
+    --text-primary: #1a1a1a;
+    --text-secondary: #666666;
+    --text-muted: #999999;
+    --accent-blue: #4043FF;
+    --accent-green: #22c55e;
+    --accent-orange: #f97316;
+    --accent-purple: #8b5cf6;
+    --border-color: #e5e5e5;
+    --border-light: #f0f0f0;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+    --shadow-lg: 0 8px 30px rgba(0,0,0,0.12);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    --radius-full: 9999px;
+    --transition-fast: 0.15s ease;
+    --transition-base: 0.2s ease;
+    --transition-slow: 0.3s ease;
+    --transition-slower: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    --font-serif: 'Instrument Serif', serif;
+    --font-sans: 'Inter', sans-serif;
+}
+
+/* ===== Reset & Base ===== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 100px; }
+
+body {
+    font-family: "Instrument Sans", sans-serif;
+    background-color: rgb(246, 246, 246);
+    color: var(--text-primary);
+    line-height: 1.5;
+    font-weight: 400;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+main { display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 1080px; margin: 0 auto; }
+img { max-width: 100%; height: auto; display: block; }
+a { text-decoration: none; color: inherit; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+/* ===== Typography ===== */
+h1, h2, h3, h4, h5, h6 { font-weight: 500; line-height: 1.1; }
+
+.section-title {
+    background-image: linear-gradient(0deg, rgb(18, 18, 18) 0%, rgba(18, 18, 18, 0.7) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: inline-block;
+    font-family: "Instrument Sans", sans-serif;
+    font-size: 58px;
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    text-align: center;
+    max-width: 700px;
+}
+
+.title-sm { font-size: 45px; letter-spacing: -0.02em; }
+
+.section-pretitle { font-family: "Caveat", cursive; font-size: 18px; font-weight: 500; color: rgb(28, 28, 28); letter-spacing: 0.1em; line-height: 1.2; }
+
+.section-header { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; }
+
+.title-italic { font-family: "Instrument Sans", sans-serif; font-style: normal; font-weight: 500; }
+
+.section-subtitle {
+    color: rgb(28, 28, 28);
+    font-family: "Inter", sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.4;
+    text-align: center;
+    max-width: 550px;
+}
+
+/* ===== Animations & Keyframes ===== */
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.animate-on-scroll { opacity: 0; transform: translateY(20px); transition: opacity 0.4s ease, transform 0.4s ease; }
+.animate-on-scroll.animate-visible { opacity: 1; transform: translateY(0); }
+
+/* ===== Section Badge ===== */
+.section-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 5px 10px;
+    background-color: #f6f6f6;
+    border-radius: 27px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow:
+        0px 0.6px 0.6px 0px rgba(28, 28, 28, 0),
+        0px 2.29px 2.29px 0px rgba(28, 28, 28, 0.02),
+        0px 10px 10px 0px rgba(28, 28, 28, 0.08),
+        0px -6px 6px -5px rgba(255, 255, 255, 1);
+    font-family: "Instrument Sans", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgb(28, 28, 28);
+}
+.section-badge svg { width: 16px; height: 16px; color: #969696; }
+
+/* ===== Buttons — rolling text hover ===== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 17px;
+    font-weight: 600;
+    font-family: "Instrument Sans", sans-serif;
+    border-radius: 16px;
+    transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    white-space: nowrap;
+    text-decoration: none;
+    letter-spacing: -0.01em;
+}
+
+.rolling-btn { height: 50px; padding: 0 32px; }
+.rolling-btn .btn-text-hidden { visibility: hidden; font-weight: 600; font-size: 17px; letter-spacing: -0.01em; }
+.rolling-btn .rolling-container { position: absolute; inset: 0; display: flex; flex-direction: column; transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1); }
+.rolling-btn:hover .rolling-container { transform: translateY(-100%); }
+.rolling-btn .rolling-text { display: flex; height: 100%; align-items: center; justify-content: center; flex-shrink: 0; }
+.rolling-btn .rolling-text span { font-weight: 600; font-size: 17px; letter-spacing: -0.01em; line-height: 1; }
+
+.btn-primary {
+    background: rgb(28, 28, 28);
+    color: rgb(255, 255, 255);
+    border: none;
+    box-shadow:
+        rgba(255, 255, 255, 0.15) 0px 0px 20px 1.64px inset,
+        rgba(0, 0, 0, 0.13) 0px 0.84px 0.5px -0.31px,
+        rgba(0, 0, 0, 0.13) 0px 1.99px 1.19px -0.63px,
+        rgba(0, 0, 0, 0.13) 0px 3.63px 2.18px -0.94px,
+        rgba(0, 0, 0, 0.13) 0px 6.04px 3.62px -1.25px,
+        rgba(0, 0, 0, 0.13) 0px 9.75px 5.85px -1.56px,
+        rgba(0, 0, 0, 0.13) 0px 15.96px 9.57px -1.88px,
+        rgba(0, 0, 0, 0.13) 0px 27.48px 16.49px -2.19px,
+        rgba(0, 0, 0, 0.13) 0px 50px 30px -2.5px;
+}
+.btn-primary:hover { background: rgb(64, 67, 255); transform: scale(1.02); }
+.btn-primary:active { transform: scale(0.95); }
+.btn-primary .rolling-text span { color: rgb(255, 255, 255); }
+
+.btn-secondary {
+    background: rgb(246, 246, 246);
+    color: rgb(28, 28, 28);
+    border: 1px solid rgb(255, 255, 255);
+    box-shadow:
+        0px 0.6px 0.6px 0px rgba(28, 28, 28, 0.01),
+        0px 2.29px 2.29px 0px rgba(28, 28, 28, 0.03),
+        0px 10px 10px 0px rgba(28, 28, 28, 0.12),
+        0px -6px 6px -5px rgb(255, 255, 255);
+}
+.btn-secondary:hover { transform: scale(1.02); }
+.btn-secondary:active { transform: scale(0.95); }
+.btn-secondary .rolling-text span { color: rgb(28, 28, 28); }
+.btn-secondary .rolling-text-hover span { color: rgb(64, 67, 255); }
+
+/* ===== Navigation ===== */
+.navbar {
+    position: fixed;
+    top: 24px;
+    left: 0; right: 0;
+    z-index: 1000;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    animation: fadeInDown 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    padding: 0 24px;
+    pointer-events: none;
+}
+
+.nav-container {
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 8px 6px 20px;
+    width: 900px;
+    max-width: 100%;
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow:
+        0px 0.6px 0.6px 0px rgba(28, 28, 28, 0.01),
+        0px 2.29px 2.29px 0px rgba(28, 28, 28, 0.03),
+        0px 10px 10px 0px rgba(28, 28, 28, 0.12),
+        0px -6px 6px -5px rgb(255, 255, 255);
+    backdrop-filter: blur(16px);
+    transition: all 0.3s ease;
+}
+
+.nav-logo { display: flex; align-items: center; gap: 8px; font-family: "Instrument Sans", sans-serif; font-weight: 700; font-size: 18px; color: rgb(28, 28, 28); flex-shrink: 0; }
+.nav-logo .logo-mark {
+    width: 28px; height: 28px; border-radius: 8px;
+    background: linear-gradient(135deg, #4043FF, #7B7DFF);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 14px; font-weight: 800;
+    box-shadow: 0 4px 10px rgba(64,67,255,0.35);
+}
+
+.nav-links { display: flex; align-items: center; justify-content: center; gap: 4px; }
+
+.nav-item { display: flex; align-items: center; justify-content: center; padding: 0 12px; height: 32px; border-radius: 10px; background-color: transparent; transition: all 0.2s ease; cursor: pointer; text-decoration: none; }
+.nav-item span { font-family: "Instrument Sans", sans-serif; font-size: 14px; font-weight: 500; letter-spacing: -0.4px; color: rgb(28, 28, 28); white-space: nowrap; }
+.nav-item:hover { background-color: rgb(246, 246, 246); }
+
+.nav-cta {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 12px 22px; height: min-content;
+    background: rgb(28, 28, 28); color: rgb(255, 255, 255);
+    border-radius: 12px; overflow: hidden; flex-shrink: 0; cursor: pointer;
+    text-decoration: none; position: relative;
+    transition: all 0.2s ease;
+}
+.nav-cta .rolling-text-container { display: flex; flex-direction: column; align-items: center; height: 16px; overflow: hidden; position: relative; }
+.nav-cta .rolling-text { display: flex; align-items: center; justify-content: center; flex: none; height: 16px; white-space: nowrap; transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1); }
+.nav-cta:hover .rolling-text { transform: translateY(-16px); }
+.nav-cta .rolling-text span { font-size: 14px; font-weight: 500; color: rgb(255, 255, 255); white-space: nowrap; }
+.nav-cta:hover { background: rgb(64, 67, 255); }
+.nav-cta:active { transform: scale(0.98); }
+
+.nav-right { display: flex; align-items: center; gap: 8px; }
+
+.hamburger-menu { display: none; flex-direction: column; justify-content: space-between; width: 24px; height: 18px; background: transparent; border: none; cursor: pointer; padding: 0; }
+.hamburger-menu span { display: block; height: 2px; width: 100%; background: rgb(28, 28, 28); border-radius: 2px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+.hamburger-menu.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+.hamburger-menu.active span:nth-child(2) { opacity: 0; }
+.hamburger-menu.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+.mobile-menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); z-index: 999; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+.mobile-menu-overlay.active { opacity: 1; visibility: visible; }
+.mobile-menu-content { position: absolute; top: 90px; left: 16px; right: 16px; background: white; border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 4px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); transform: translateY(-20px); transition: transform 0.3s ease; }
+.mobile-menu-overlay.active .mobile-menu-content { transform: translateY(0); }
+.mobile-menu-item { display: flex; align-items: center; padding: 14px 16px; font-size: 16px; font-weight: 500; color: rgb(28, 28, 28); border-radius: 12px; }
+.mobile-menu-item:hover { background: rgb(246, 246, 246); }
+.mobile-menu-cta { display: flex; align-items: center; justify-content: center; padding: 14px 24px; background: rgb(28, 28, 28); color: white; font-weight: 500; border-radius: 12px; margin-top: 6px; }
+
+/* ===== Hero Section ===== */
+.hero { padding: 160px 24px 40px; display: flex; flex-direction: column; align-items: center; text-align: center; max-width: 1080px; margin: 0 auto; position: relative; width: 100%; gap: 56px; }
+
+.hero-badge {
+    display: flex; align-items: center; gap: 12px; padding: 4px 16px 4px 4px;
+    background-color: rgb(246, 246, 246); border-radius: 100px; border: 1px solid rgb(255, 255, 255);
+    box-shadow: 0px 0.6px 0.6px 0px rgba(28,28,28,0), 0px 2.29px 2.29px 0px rgba(28,28,28,0.02), 0px 10px 10px 0px rgba(28,28,28,0.08), 0px -6px 6px -5px rgb(255,255,255);
+    animation: fadeInUp 0.5s ease forwards; opacity: 0;
+}
+.badge-live-container { display: flex; align-items: center; gap: 6px; padding: 2px 8px; }
+.badge-pulse-wrapper { position: relative; width: 12px; height: 12px; display: flex; align-items: center; justify-content: center; }
+.badge-pulse-ring { position: absolute; width: 100%; height: 100%; border-radius: 100px; background-color: rgb(64, 67, 255); animation: badgePulseRing 2s ease-in-out infinite; }
+.badge-pulse-dot { position: absolute; width: 8px; height: 8px; border-radius: 100px; background-color: rgb(64, 67, 255); left: 50%; top: 50%; transform: translate(-50%, -50%); }
+@keyframes badgePulseRing { 0%, 100% { opacity: 0.3; transform: scale(1); } 50% { opacity: 0; transform: scale(1.8); } }
+.badge-live { font-size: 14px; font-weight: 500; line-height: 22px; letter-spacing: -0.3px; color: rgb(64, 67, 255); white-space: nowrap; }
+.badge-content { display: flex; align-items: center; gap: 6px; }
+.badge-text { font-size: 14px; font-weight: 500; line-height: 22px; letter-spacing: -0.3px; color: rgb(28, 28, 28); white-space: nowrap; }
+
+.hero-text { display: flex; flex-direction: column; align-items: center; gap: 16px; width: 100%; }
+.hero-title {
+    font-family: "Instrument Sans", sans-serif;
+    font-size: 68px; font-weight: 600; line-height: 1.1; letter-spacing: -0.02em;
+    animation: fadeInUp 0.5s ease forwards; animation-delay: 0.05s; opacity: 0;
+    color: rgb(18, 18, 18); max-width: 700px;
+}
+.hero-subtitle {
+    font-family: "Inter", sans-serif; font-size: 18px; font-weight: 400; color: rgb(28, 28, 28);
+    line-height: 25.2px;
+    animation: fadeInUp 0.5s ease forwards; animation-delay: 0.1s; opacity: 0;
+    max-width: 460px;
+}
+.hero-buttons { display: flex; gap: 12px; animation: fadeInUp 0.5s ease forwards; animation-delay: 0.15s; opacity: 0; z-index: 1; }
+
+/* Hero mockup — CSS-built product browser (no proprietary video asset) */
+.dashboard-mockup {
+    width: 100%; max-width: 1080px; margin: 0 auto; opacity: 0;
+    transform-origin: center top;
+    transform: perspective(2000px) rotateX(20deg) scale(0.92) translateY(30px);
+    animation: heroImageReveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: 0.3s;
+    border-radius: 16px; overflow: hidden;
+    box-shadow: 0px 0.6px 0.6px rgba(28,28,28,0), 0px 2.3px 2.3px rgba(28,28,28,0.05), 0px 30px 60px rgba(28,28,28,0.16), 0px -6px 6px -5px rgb(255,255,255);
+    border: 1px solid rgba(255, 255, 255, 1);
+}
+@keyframes heroImageReveal { 0% { opacity: 0; transform: perspective(2000px) rotateX(20deg) scale(0.92) translateY(30px); } 100% { opacity: 1; transform: perspective(2000px) rotateX(0deg) scale(1) translateY(0); } }
+
+.hero-mock-topbar { display: flex; align-items: center; gap: 10px; padding: 12px 18px; background: #fafafa; border-bottom: 1px solid rgba(0,0,0,0.06); }
+.hero-mock-dots { display: flex; gap: 6px; }
+.hero-mock-dots span { width: 10px; height: 10px; border-radius: 50%; }
+.hero-mock-dots span:nth-child(1) { background: #ff5f57; }
+.hero-mock-dots span:nth-child(2) { background: #ffbd2e; }
+.hero-mock-dots span:nth-child(3) { background: #28c840; }
+.hero-mock-url { flex: 1; max-width: 320px; margin: 0 auto; font-family: "JetBrains Mono", monospace; font-size: 11px; color: rgba(28,28,28,0.4); background: white; border: 1px solid rgba(0,0,0,0.06); padding: 6px 12px; border-radius: 6px; text-align: center; }
+.hero-mock-body { display: flex; min-height: 460px; background: #f5f5f7; }
+.hero-mock-side { width: 220px; background: #1c1c1c; padding: 20px 16px; display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
+.hero-mock-side .side-logo { width: 32px; height: 32px; border-radius: 9px; background: linear-gradient(135deg, #4043FF, #7B7DFF); margin-bottom: 18px; }
+.hero-mock-side .side-row { height: 34px; border-radius: 8px; background: rgba(255,255,255,0.06); }
+.hero-mock-side .side-row.active { background: rgba(64,67,255,0.35); box-shadow: inset 0 0 0 1px rgba(64,67,255,0.6); }
+.hero-mock-main { flex: 1; padding: 28px 32px; display: flex; flex-direction: column; gap: 20px; }
+.hero-mock-heading { display: flex; align-items: center; justify-content: space-between; }
+.hero-mock-heading .h-line { width: 180px; height: 18px; border-radius: 6px; background: rgba(28,28,28,0.1); }
+.hero-mock-heading .h-cta { background: #4043FF; color: white; font-size: 13px; font-weight: 600; padding: 9px 18px; border-radius: 9px; font-family: "Instrument Sans", sans-serif; }
+.hero-mock-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.hero-mock-card { background: white; border-radius: 12px; padding: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); display: flex; flex-direction: column; gap: 10px; }
+.hero-mock-card .c-img { height: 70px; border-radius: 8px; background: linear-gradient(135deg, #e8edff, #f0e8ff); }
+.hero-mock-card .c-line { height: 7px; border-radius: 4px; background: rgba(28,28,28,0.08); }
+.hero-mock-cursor { position: absolute; z-index: 5; pointer-events: none; animation: heroCursorPath 9s cubic-bezier(0.4,0,0.2,1) infinite; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15)); }
+.hero-mock-cursor-label { position: absolute; top: -22px; left: 12px; font-family: "JetBrains Mono", monospace; font-size: 10px; font-weight: 600; color: white; background: #1c1c1c; padding: 4px 9px; border-radius: 5px; white-space: nowrap; }
+@keyframes heroCursorPath {
+    0%   { top: 60px;  left: 260px; }
+    10%  { top: 60px;  left: 260px; }
+    28%  { top: 300px; left: 320px; }
+    38%  { top: 300px; left: 320px; }
+    55%  { top: 300px; left: 560px; }
+    65%  { top: 300px; left: 560px; }
+    85%  { top: 60px;  left: 260px; }
+    100% { top: 60px;  left: 260px; }
+}
+
+/* ===== Live Demo Console (wired to the ADIP orchestrator) ===== */
+.demo-console {
+    width: 100%; max-width: 720px; margin: 0 auto;
+    background: var(--bg-white);
+    border: 1px solid rgba(255,255,255,0.8);
+    border-radius: 20px;
+    padding: 28px 30px;
+    text-align: left;
+    box-shadow:
+        0px 0.6px 0.6px 0px rgba(28,28,28,0.01),
+        0px 2.29px 2.29px 0px rgba(28,28,28,0.03),
+        0px 10px 10px 0px rgba(28,28,28,0.10),
+        0px -6px 6px -5px rgb(255,255,255);
+    animation: fadeInUp 0.5s ease forwards; animation-delay: 0.2s; opacity: 0;
+}
+.dc-title { font-family: "Instrument Sans", sans-serif; font-size: 22px; font-weight: 600; letter-spacing: -0.02em; color: rgb(18,18,18); }
+.dc-sub { font-family: "Inter", sans-serif; font-size: 14px; color: rgb(110,110,110); margin-top: 4px; margin-bottom: 20px; line-height: 1.5; }
+.dc-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+.dc-label { font-family: "Instrument Sans", sans-serif; font-size: 13px; font-weight: 600; color: rgb(60,60,60); }
+.dc-input, .dc-textarea {
+    font-family: "Inter", sans-serif; font-size: 15px; color: rgb(28,28,28);
+    background: rgb(250,250,250);
+    border: 1.5px solid rgba(28,28,28,0.10);
+    border-radius: 12px; padding: 12px 14px; width: 100%;
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+.dc-input:focus, .dc-textarea:focus { outline: none; border-color: var(--accent-blue); background: #fff; }
+.dc-textarea { resize: vertical; min-height: 78px; line-height: 1.5; }
+.dc-hint { font-family: "Inter", sans-serif; font-size: 12px; color: rgb(150,150,150); margin-top: 2px; }
+.dc-submit {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    width: 100%; margin-top: 6px; padding: 14px 24px;
+    background: rgb(28,28,28); color: #fff;
+    font-family: "Instrument Sans", sans-serif; font-size: 16px; font-weight: 600;
+    border-radius: 14px; cursor: pointer; border: none;
+    transition: background 0.25s ease, transform 0.15s ease;
+}
+.dc-submit:hover:not(:disabled) { background: var(--accent-blue); transform: translateY(-1px); }
+.dc-submit:disabled { opacity: 0.55; cursor: not-allowed; }
+.dc-status-line { display: flex; align-items: center; gap: 8px; margin-top: 14px; font-family: "Inter", sans-serif; font-size: 13px; color: rgb(110,110,110); }
+.dc-badge-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-green); box-shadow: 0 0 0 3px rgba(34,197,94,0.15); flex-shrink: 0; }
+.dc-badge-dot.offline { background: #f59e0b; box-shadow: 0 0 0 3px rgba(245,158,11,0.15); }
+.dc-badge-dot.error { background: #ef4444; box-shadow: 0 0 0 3px rgba(239,68,68,0.15); }
+
+/* Progress */
+.dc-run { margin-top: 22px; padding-top: 20px; border-top: 1px solid rgba(28,28,28,0.07); }
+.dc-progress-track { height: 6px; background: rgba(28,28,28,0.07); border-radius: 4px; overflow: hidden; margin-bottom: 16px; }
+.dc-progress-fill { height: 100%; width: 0%; border-radius: 4px; background: linear-gradient(90deg, var(--accent-blue), #7B7DFF); transition: width 0.5s cubic-bezier(0.4,0,0.2,1); }
+.dc-steps { display: flex; flex-direction: column; gap: 8px; }
+.dc-step { display: flex; align-items: center; gap: 10px; font-family: "Inter", sans-serif; font-size: 14px; color: rgb(150,150,150); }
+.dc-step-icon { width: 18px; height: 18px; border-radius: 50%; border: 2px solid rgba(28,28,28,0.15); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #fff; }
+.dc-step.running { color: rgb(28,28,28); font-weight: 500; }
+.dc-step.running .dc-step-icon { border-color: var(--accent-blue); border-top-color: transparent; animation: dc-spin 0.7s linear infinite; }
+.dc-step.done { color: rgb(70,70,70); }
+.dc-step.done .dc-step-icon { background: var(--accent-green); border-color: var(--accent-green); }
+.dc-step.failed { color: #ef4444; }
+.dc-step.failed .dc-step-icon { background: #ef4444; border-color: #ef4444; }
+@keyframes dc-spin { to { transform: rotate(360deg); } }
+
+.dc-error { margin-top: 14px; padding: 12px 14px; border-radius: 10px; background: rgba(239,68,68,0.07); border: 1px solid rgba(239,68,68,0.25); color: #b91c1c; font-family: "Inter", sans-serif; font-size: 13px; line-height: 1.5; white-space: pre-wrap; word-break: break-word; max-height: 160px; overflow: auto; }
+
+/* Results */
+.dc-result { margin-top: 22px; padding-top: 20px; border-top: 1px solid rgba(28,28,28,0.07); }
+.dc-result-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+.dc-result-title { font-family: "Instrument Sans", sans-serif; font-size: 17px; font-weight: 600; color: rgb(18,18,18); }
+.dc-live-tag { font-family: "Inter", sans-serif; font-size: 12px; font-weight: 600; color: var(--accent-green); background: rgba(34,197,94,0.10); padding: 4px 10px; border-radius: 20px; }
+.dc-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(92px, 1fr)); gap: 10px; margin-bottom: 16px; }
+.dc-stat { background: rgb(248,248,248); border-radius: 10px; padding: 12px; text-align: center; }
+.dc-stat-v { font-family: "Instrument Sans", sans-serif; font-size: 20px; font-weight: 600; color: rgb(18,18,18); letter-spacing: -0.02em; }
+.dc-stat-l { font-family: "Inter", sans-serif; font-size: 11px; color: rgb(140,140,140); margin-top: 2px; }
+.dc-shots { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 16px; }
+.dc-shot { flex: 0 0 auto; width: 190px; border-radius: 10px; border: 1px solid rgba(28,28,28,0.08); overflow: hidden; background: #fff; }
+.dc-shot img { width: 100%; height: 118px; object-fit: cover; object-position: top; display: block; }
+.dc-shot-cap { font-family: "Inter", sans-serif; font-size: 10px; color: rgb(150,150,150); padding: 6px 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dc-demo-frame { width: 100%; aspect-ratio: 16/10; border: 1px solid rgba(28,28,28,0.10); border-radius: 12px; overflow: hidden; background: #0a0e1a; }
+.dc-demo-frame iframe { width: 100%; height: 100%; border: none; display: block; }
+.dc-actions { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+.dc-link { font-family: "Instrument Sans", sans-serif; font-size: 14px; font-weight: 600; color: var(--accent-blue); }
+.dc-link:hover { text-decoration: underline; }
+
+@media (max-width: 640px) {
+    .demo-console { padding: 22px 18px; border-radius: 16px; }
+}
+
+/* ===== Logo Bar ===== */
+.logo-bar { width: 100%; max-width: 1080px; margin: 0 auto; padding: 32px 24px; display: flex; flex-direction: column; align-items: center; gap: 24px; }
+.logo-bar-title { font-family: "Inter", sans-serif; font-size: 14px; color: rgba(28,28,28,0.4); text-align: center; }
+.logo-slider { display: flex; gap: 48px; align-items: center; justify-content: center; flex-wrap: wrap; opacity: 0.5; }
+.logo-chip { font-family: "Instrument Sans", sans-serif; font-weight: 700; font-size: 16px; color: rgb(60,60,60); }
+
+/* ===== Problem Section ===== */
+.problem-section { width: 100%; max-width: 1080px; margin: 0 auto; padding: 100px 24px; display: flex; flex-direction: column; align-items: center; gap: 56px; }
+.problem-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; width: 100%; }
+.problem-card { background: white; border-radius: 20px; padding: 28px; box-shadow: var(--shadow-md); display: flex; flex-direction: column; gap: 14px; }
+.problem-image-container { height: 140px; border-radius: 14px; background: linear-gradient(145deg, #E8EDFF, #FCEADF); display: flex; align-items: center; justify-content: center; }
+.problem-card h3 { font-family: "Instrument Sans", sans-serif; font-size: 19px; font-weight: 600; color: rgb(20,20,20); }
+.problem-card p { font-family: "Inter", sans-serif; font-size: 15px; color: rgb(100,100,100); line-height: 1.5; }
+.problem-cta { display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; }
+.problem-cta p { font-family: "Instrument Sans", sans-serif; font-size: 18px; font-weight: 500; color: rgb(28,28,28); }
+
+/* ===== Core Features Section (Scroll-driven) ===== */
+.core-features-section { padding: 100px 40px; display: flex; flex-direction: column; align-items: center; gap: 80px; max-width: 1400px; margin: 0 auto; width: 100%; }
+.core-features-header { display: flex; flex-direction: column; align-items: center; gap: 24px; text-align: center; }
+.core-features-header .section-title { font-size: 58px; line-height: 1.08; letter-spacing: -0.035em; max-width: 800px; }
+
+.core-features-body { display: grid; grid-template-columns: 260px 1fr; gap: 72px; width: 100%; max-width: 1280px; align-items: start; }
+
+.core-features-nav { position: sticky; top: 120px; align-self: start; }
+.core-nav-list { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+.core-nav-item { display: block; width: 100%; text-align: left; background: none; border: none; padding: 14px 0; font-family: "Instrument Sans", sans-serif; font-size: 17px; font-weight: 400; color: rgba(28,28,28,0.4); cursor: pointer; transition: color 0.35s ease, font-weight 0.35s ease; letter-spacing: -0.01em; }
+.core-nav-item:hover { color: rgba(28,28,28,0.7); }
+.core-nav-item.active { color: rgb(28,28,28); font-weight: 600; }
+
+.core-features-content { display: flex; flex-direction: column; gap: 0; }
+.core-feature-block { padding: 0 0 100px 0; opacity: 0; transform: translateY(24px); transition: opacity 0.6s cubic-bezier(0.4,0,0.2,1), transform 0.6s cubic-bezier(0.4,0,0.2,1); }
+.core-feature-block.in-view { opacity: 1; transform: translateY(0); }
+.core-feature-block:last-child { padding-bottom: 40px; }
+.core-feature-text { margin-bottom: 36px; }
+.core-feature-text h3 { font-family: "Instrument Sans", sans-serif; font-size: 38px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.15; color: rgb(20,20,20); margin-bottom: 14px; }
+.core-feature-text p { font-family: "Inter", sans-serif; font-size: 17px; line-height: 1.65; color: rgb(100,100,100); max-width: 580px; }
+.inline-learn-more { color: rgb(64,67,255); font-weight: 500; }
+.inline-learn-more:hover { text-decoration: underline; }
+
+.core-feature-visual { border-radius: 24px; padding: 48px; min-height: 420px; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
+
+/* Visual gradient variants — 8 tabs */
+.script-visual { background: linear-gradient(145deg, #E8EDFF 0%, #FCEADF 50%, #F0E8FF 100%); }
+.zoom-visual { background: linear-gradient(145deg, #E3F0FF 0%, #EDE8FF 50%, #E8EDFF 100%); padding: 36px; }
+.voiceover-visual { background: linear-gradient(145deg, #FFF0E5 0%, #FFE4D0 50%, #FCEADF 100%); flex-direction: column; gap: 20px; }
+.guides-visual { background: linear-gradient(145deg, #E8FFF0 0%, #E0F5FF 50%, #E8EDFF 100%); }
+.brand-visual { background: linear-gradient(145deg, #F0E8FF 0%, #E8EDFF 50%, #FCEADF 100%); }
+.publish-visual { background: linear-gradient(145deg, #FCEADF 0%, #FFE4D0 50%, #FFF0E5 100%); }
+.docs-visual { background: linear-gradient(145deg, #EFEAFB 0%, #F4ECE0 50%, #E5ECF7 100%); align-items: stretch; padding: 40px; }
+
+/* --- 1. Autopilot Browser + Cursor --- */
+.cfv-browser { width: 100%; max-width: 580px; border-radius: 14px; overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.06); background: white; }
+.cfv-browser-bar { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: #fafafa; border-bottom: 1px solid rgba(0,0,0,0.06); }
+.cfv-browser-dots { display: flex; gap: 6px; }
+.cfv-browser-dots span { width: 10px; height: 10px; border-radius: 50%; background: rgba(28,28,28,0.1); }
+.cfv-browser-dots span:nth-child(1) { background: #ff5f57; }
+.cfv-browser-dots span:nth-child(2) { background: #ffbd2e; }
+.cfv-browser-dots span:nth-child(3) { background: #28c840; }
+.cfv-browser-url { flex: 1; display: flex; align-items: center; gap: 6px; font-family: "Inter", sans-serif; font-size: 11px; color: rgba(28,28,28,0.4); background: white; border: 1px solid rgba(0,0,0,0.06); padding: 5px 10px; border-radius: 6px; }
+.cfv-rec-badge { display: flex; align-items: center; gap: 5px; font-family: "JetBrains Mono", monospace; font-size: 10px; font-weight: 600; color: #FF4444; background: rgba(255,68,68,0.08); padding: 4px 10px; border-radius: 6px; letter-spacing: 0.05em; }
+.cfv-rec-dot { width: 6px; height: 6px; border-radius: 50%; background: #FF4444; animation: cfv-rec-blink 1.2s ease-in-out infinite; }
+@keyframes cfv-rec-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+.cfv-browser-viewport { position: relative; display: flex; min-height: 280px; background: #f5f5f7; overflow: hidden; }
+.cfv-app-sidebar { width: 48px; background: #1c1c1c; display: flex; flex-direction: column; align-items: center; padding: 12px 0; gap: 10px; }
+.cfv-sb-logo { width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, #4043FF, #7B7DFF); margin-bottom: 8px; }
+.cfv-sb-item { width: 28px; height: 28px; border-radius: 6px; background: rgba(255,255,255,0.08); }
+.cfv-sb-item--active { background: rgba(64,67,255,0.4); box-shadow: inset 0 0 0 2px rgba(64,67,255,0.6); }
+.cfv-app-main { flex: 1; display: flex; flex-direction: column; }
+.cfv-app-topbar { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; border-bottom: 1px solid rgba(0,0,0,0.06); background: white; }
+.cfv-app-title { width: 100px; height: 12px; border-radius: 4px; background: rgba(28,28,28,0.12); }
+.cfv-app-cta { font-family: "Instrument Sans", sans-serif; font-size: 12px; font-weight: 600; color: white; background: #4043FF; padding: 7px 14px; border-radius: 8px; white-space: nowrap; }
+.cfv-app-content { padding: 20px; display: flex; gap: 14px; flex: 1; }
+.cfv-app-card { flex: 1; background: white; border-radius: 10px; padding: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); display: flex; flex-direction: column; gap: 10px; }
+.cfv-app-card-img { height: 60px; border-radius: 6px; background: linear-gradient(135deg, #e8edff, #f0e8ff); }
+.cfv-app-card-line { height: 7px; border-radius: 4px; background: rgba(28,28,28,0.06); }
+.cfv-app-card-line--w80 { width: 80%; } .cfv-app-card-line--w70 { width: 70%; } .cfv-app-card-line--w50 { width: 50%; } .cfv-app-card-line--w40 { width: 40%; }
+.cfv-cursor { position: absolute; z-index: 5; pointer-events: none; animation: cfv-cursor-path 8s cubic-bezier(0.4,0,0.2,1) infinite; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15)); }
+.cfv-cursor-label { position: absolute; top: -20px; left: 10px; font-family: "JetBrains Mono", monospace; font-size: 9px; font-weight: 600; color: white; background: #1c1c1c; padding: 3px 8px; border-radius: 4px; white-space: nowrap; }
+.cfv-cursor-ripple { position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%; background: rgba(64,67,255,0.3); animation: cfv-cursor-click 8s ease infinite; transform: scale(0); }
+@keyframes cfv-cursor-path {
+    0% { top: 80px; left: 24px; } 8% { top: 80px; left: 24px; }
+    12% { top: 120px; left: 24px; } 20% { top: 120px; left: 24px; }
+    30% { top: 52px; left: 80%; } 38% { top: 52px; left: 80%; }
+    50% { top: 160px; left: 30%; } 58% { top: 160px; left: 30%; }
+    70% { top: 160px; left: 70%; } 78% { top: 160px; left: 70%; }
+    90% { top: 80px; left: 24px; } 100% { top: 80px; left: 24px; }
+}
+@keyframes cfv-cursor-click {
+    0%, 7% { transform: scale(0); opacity: 0.6; } 9% { transform: scale(2.5); opacity: 0; }
+    10%, 19% { transform: scale(0); opacity: 0.6; } 21% { transform: scale(2.5); opacity: 0; }
+    22%, 37% { transform: scale(0); opacity: 0.6; } 39% { transform: scale(2.5); opacity: 0; }
+    40%, 57% { transform: scale(0); opacity: 0.6; } 59% { transform: scale(2.5); opacity: 0; }
+    60%, 77% { transform: scale(0); opacity: 0.6; } 79% { transform: scale(2.5); opacity: 0; }
+    80%, 100% { transform: scale(0); opacity: 0; }
+}
+
+/* --- 2. Editing Timeline --- */
+.cfv-editing-card { background: rgba(255,255,255,0.92); backdrop-filter: blur(10px); border-radius: 18px; padding: 28px 32px; box-shadow: 0 8px 32px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04); width: 100%; max-width: 580px; display: flex; flex-direction: column; gap: 18px; }
+.cfv-editing-header { display: flex; align-items: center; justify-content: space-between; }
+.cfv-editing-title { font-family: "Instrument Sans", sans-serif; font-size: 15px; font-weight: 600; color: rgb(28,28,28); }
+.cfv-editing-time { font-family: "JetBrains Mono", monospace; font-size: 12px; color: rgba(28,28,28,0.4); }
+.cfv-timeline-tracks { position: relative; background: rgba(28,28,28,0.02); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 8px; }
+.cfv-track { display: flex; align-items: center; gap: 12px; }
+.cfv-track-label { font-family: "Inter", sans-serif; font-size: 11px; font-weight: 500; color: rgba(28,28,28,0.35); width: 40px; flex-shrink: 0; text-align: right; }
+.cfv-track-bar { flex: 1; height: 32px; position: relative; border-radius: 6px; }
+.cfv-clip { position: absolute; top: 0; height: 100%; border-radius: 5px; opacity: 0; animation: cfv-clip-in 0.6s ease both; }
+.cfv-clip--blue { background: linear-gradient(135deg, #4043FF, #7B7DFF); }
+.cfv-clip--purple { background: linear-gradient(135deg, #667eea, #764ba2); }
+.cfv-clip:nth-child(1) { animation-delay: 0.1s; } .cfv-clip:nth-child(2) { animation-delay: 0.25s; } .cfv-clip:nth-child(3) { animation-delay: 0.4s; }
+@keyframes cfv-clip-in { from { opacity: 0; transform: scaleX(0); transform-origin: left; } to { opacity: 1; transform: scaleX(1); transform-origin: left; } }
+.cfv-waveform-mini { display: flex; align-items: center; gap: 2px; height: 100%; padding: 6px 0; }
+.cfv-waveform-mini span { flex: 1; background: rgba(34,197,94,0.5); border-radius: 2px; animation: cfv-wave-bar 1.6s ease-in-out infinite; }
+.cfv-waveform-mini span:nth-child(odd) { animation-delay: 0s; height: 40%; }
+.cfv-waveform-mini span:nth-child(even) { animation-delay: 0.2s; height: 70%; }
+@keyframes cfv-wave-bar { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(0.4); } }
+.cfv-playhead { position: absolute; top: 8px; bottom: 8px; width: 2px; background: #FF4444; border-radius: 2px; z-index: 2; animation: cfv-playhead-sweep 6s linear infinite; }
+@keyframes cfv-playhead-sweep { 0% { left: 16px; } 100% { left: calc(100% - 16px); } }
+.cfv-timeline-footer { display: flex; justify-content: space-between; font-family: "JetBrains Mono", monospace; font-size: 11px; color: rgba(28,28,28,0.35); padding: 0 4px; }
+.cfv-editing-tags { display: flex; gap: 8px; }
+.cfv-tag { font-family: "Instrument Sans", sans-serif; font-size: 12px; font-weight: 600; padding: 6px 12px; border-radius: 20px; }
+.cfv-tag--cut { background: rgba(64,67,255,0.1); color: #4043FF; }
+.cfv-tag--zoom { background: rgba(139,92,246,0.1); color: #8b5cf6; }
+.cfv-tag--pacing { background: rgba(34,197,94,0.1); color: #22c55e; }
+
+/* --- 3. Script + Voiceover --- */
+.script-editor { background: rgba(255,255,255,0.92); backdrop-filter: blur(10px); border-radius: 18px; padding: 30px 34px; box-shadow: 0 8px 32px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04); width: 100%; max-width: 540px; display: flex; flex-direction: column; gap: 10px; font-family: 'SF Mono', 'Fira Code', 'JetBrains Mono', monospace; font-size: 18px; line-height: 1.75; }
+.script-line { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+.script-text-dim { color: rgba(28,28,28,0.45); }
+.script-text-bold { color: rgb(28,28,28); font-weight: 600; }
+.script-text-highlight { background: rgba(64,67,255,0.12); color: #4043FF; padding: 1px 6px; border-radius: 4px; font-weight: 500; }
+.script-sparkle { font-size: 14px; color: #4043FF; animation: sparkle-pulse 2s ease-in-out infinite; }
+@keyframes sparkle-pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.15); } }
+.cfv-script-cursor { color: #4043FF; font-weight: 300; animation: cfv-cursor-blink 1s step-end infinite; }
+@keyframes cfv-cursor-blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
+.cfv-line-reveal { animation: cfv-line-appear 0.6s ease both; }
+@keyframes cfv-line-appear { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: translateX(0); } }
+
+.voice-selector { background: rgba(255,255,255,0.92); backdrop-filter: blur(10px); border-radius: 18px; padding: 10px; box-shadow: 0 8px 32px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04); width: 100%; max-width: 540px; display: flex; flex-direction: column; gap: 3px; }
+.voice-row { display: flex; align-items: center; gap: 16px; padding: 14px 20px; border-radius: 12px; }
+.voice-row.active-voice { background: rgba(255,237,220,0.6); }
+.voice-play { width: 34px; height: 34px; border-radius: 50%; background: rgba(28,28,28,0.06); display: flex; align-items: center; justify-content: center; font-size: 12px; color: rgb(28,28,28); flex-shrink: 0; }
+.voice-play.active-play { background: #4043FF; color: white; }
+.voice-name { font-family: "Instrument Sans", sans-serif; font-size: 16px; font-weight: 600; color: rgb(28,28,28); flex: 1; }
+.voice-tags { display: flex; gap: 8px; }
+.voice-tag { font-size: 12px; font-weight: 500; color: rgb(100,100,100); background: rgba(28,28,28,0.05); padding: 4px 10px; border-radius: 20px; white-space: nowrap; }
+.cfv-waveform { display: flex; align-items: center; gap: 2px; height: 22px; flex: 1; max-width: 100px; }
+.cfv-waveform span { flex: 1; background: #4043FF; border-radius: 2px; animation: cfv-voice-wave 1.2s ease-in-out infinite; }
+.cfv-waveform span:nth-child(odd) { height: 40%; animation-delay: 0s; } .cfv-waveform span:nth-child(even) { height: 80%; animation-delay: 0.15s; }
+@keyframes cfv-voice-wave { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(0.3); } }
+
+/* --- 4. Captions --- */
+.zoom-browser { background: rgba(255,255,255,0.95); border-radius: 18px; box-shadow: 0 8px 32px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04); width: 100%; max-width: 580px; overflow: hidden; }
+.zoom-browser-bar { display: flex; align-items: center; gap: 6px; padding: 12px 16px; border-bottom: 1px solid rgba(0,0,0,0.05); }
+.zoom-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(28,28,28,0.1); }
+.zoom-url-bar { margin-left: 10px; font-family: "Inter", sans-serif; font-size: 12px; color: rgba(28,28,28,0.4); background: rgba(28,28,28,0.03); padding: 4px 12px; border-radius: 6px; flex: 1; }
+.cfv-caption-bar { position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.85); color: white; padding: 12px 24px; border-radius: 8px; white-space: nowrap; }
+.cfv-caption-words { display: flex; gap: 6px; font-size: 14px; font-weight: 500; }
+.cfv-caption-word { animation: cfv-word-pop 4s ease-in-out infinite; }
+.cfv-caption-word--2 { animation-delay: 0.3s; color: #8B8FFF; font-weight: 600; }
+.cfv-caption-word--3 { animation-delay: 0.6s; } .cfv-caption-word--4 { animation-delay: 0.9s; }
+@keyframes cfv-word-pop { 0%, 100% { opacity: 1; transform: translateY(0); } 10% { opacity: 0; transform: translateY(4px); } 20% { opacity: 1; transform: translateY(0); } }
+.cfv-lang-switcher { position: absolute; top: 16px; right: 16px; display: flex; gap: 4px; }
+.cfv-lang { font-size: 16px; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.8); transition: transform 0.2s; }
+.cfv-lang--active { box-shadow: 0 0 0 2px #4043FF; transform: scale(1.1); }
+
+/* --- 5. Brand Kit --- */
+.brand-panel { background: rgba(255,255,255,0.92); backdrop-filter: blur(10px); border-radius: 18px; padding: 32px 36px; box-shadow: 0 8px 32px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04); width: 100%; max-width: 500px; display: flex; flex-direction: column; gap: 24px; }
+.brand-panel-header { display: flex; align-items: center; justify-content: space-between; font-family: "Instrument Sans", sans-serif; font-size: 18px; font-weight: 600; color: rgb(28,28,28); }
+.brand-applied-tag { font-size: 12px; font-weight: 500; color: #22c55e; background: rgba(34,197,94,0.08); padding: 4px 10px; border-radius: 20px; animation: cfv-badge-pulse 2s ease-in-out infinite; }
+@keyframes cfv-badge-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+.brand-colors-row { display: flex; gap: 10px; }
+.brand-swatch { width: 52px; height: 52px; border-radius: 12px; animation: cfv-swatch-appear 0.5s cubic-bezier(0.34,1.56,0.64,1) both; }
+@keyframes cfv-swatch-appear { from { opacity: 0; transform: scale(0.5) rotate(-8deg); } to { opacity: 1; transform: scale(1) rotate(0deg); } }
+.brand-font-preview { display: flex; flex-direction: column; gap: 4px; }
+.brand-font-label { font-family: "Inter", sans-serif; font-size: 12px; color: rgb(150,150,150); }
+.brand-font-sample { font-family: "Instrument Sans", sans-serif; font-size: 24px; font-weight: 600; color: rgb(28,28,28); letter-spacing: -0.02em; }
+.brand-items-list { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.brand-check-item { display: flex; align-items: center; gap: 10px; font-size: 15px; color: rgb(80,80,80); padding: 8px 0; animation: cfv-check-slide 0.5s ease both; }
+@keyframes cfv-check-slide { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+.brand-check { color: #4043FF; font-weight: 700; font-size: 12px; }
+
+/* --- 6. Localization --- */
+.cfv-locale-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; width: 100%; }
+.cfv-locale-card { padding: 14px; background: #f8f8f8; border-radius: 10px; display: flex; align-items: center; gap: 10px; animation: cfv-locale-appear 0.5s ease both; }
+@keyframes cfv-locale-appear { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.cfv-locale-flag { font-size: 22px; flex-shrink: 0; }
+.cfv-locale-info { flex: 1; min-width: 0; }
+.cfv-locale-name { font-family: "Instrument Sans", sans-serif; font-size: 14px; font-weight: 500; color: rgb(28,28,28); display: block; margin-bottom: 6px; }
+.cfv-locale-bar { height: 3px; background: rgba(28,28,28,0.06); border-radius: 3px; overflow: hidden; }
+.cfv-locale-fill { height: 100%; border-radius: 3px; background: #22c55e; animation: cfv-bar-fill 1.5s ease both; }
+.cfv-locale-fill--active { background: linear-gradient(90deg, #4043FF, #7B7DFF); }
+@keyframes cfv-bar-fill { from { width: 0% !important; } }
+.cfv-locale-done { color: #22c55e; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+.cfv-locale-more { margin-top: 16px; padding: 12px; background: #f0f4ff; border-radius: 8px; font-family: "Inter", sans-serif; font-size: 13px; color: #4043FF; }
+
+/* --- 7. Fine-Tune --- */
+.cfv-finetune-card { background: white; border-radius: 14px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); width: 100%; max-width: 580px; display: flex; flex-direction: column; gap: 16px; }
+.cfv-finetune-header { display: flex; align-items: center; justify-content: space-between; }
+.cfv-finetune-title { font-family: "Instrument Sans", sans-serif; font-size: 14px; font-weight: 600; color: #666; }
+.cfv-finetune-actions { display: flex; gap: 6px; }
+.cfv-finetune-btn { width: 30px; height: 30px; border-radius: 8px; background: #f8f8f8; display: flex; align-items: center; justify-content: center; color: #999; }
+.cfv-finetune-timeline { background: #f8f9fa; border-radius: 10px; padding: 16px; }
+.cfv-ft-clips { display: flex; gap: 4px; margin-bottom: 10px; position: relative; }
+.cfv-ft-clip { height: 44px; border-radius: 6px; position: relative; overflow: hidden; }
+.cfv-ft-clip--1 { background: linear-gradient(135deg, #4043FF, #7B7DFF); } .cfv-ft-clip--2 { background: linear-gradient(135deg, #667eea, #764ba2); } .cfv-ft-clip--3 { background: linear-gradient(135deg, #f093fb, #f5576c); }
+.cfv-ft-playhead { position: absolute; top: 0; bottom: 0; width: 2px; background: #FF4444; border-radius: 2px; z-index: 2; animation: cfv-ft-sweep 5s linear infinite; }
+@keyframes cfv-ft-sweep { 0% { left: 0; } 100% { left: 100%; } }
+.cfv-ft-times { display: flex; justify-content: space-between; font-family: "JetBrains Mono", monospace; font-size: 11px; color: #999; }
+.cfv-finetune-controls { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.cfv-ft-control { padding: 10px; background: #f8f9fa; border-radius: 8px; text-align: center; animation: cfv-control-pop 0.4s ease both; }
+@keyframes cfv-control-pop { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+.cfv-ft-control-label { font-family: "Instrument Sans", sans-serif; font-size: 12px; font-weight: 600; color: #333; margin-bottom: 2px; }
+.cfv-ft-control-sub { font-family: "Inter", sans-serif; font-size: 11px; color: #666; }
+
+/* --- 8. Docusmith --- */
+.cfv-doc-card { background: #ffffff; border-radius: 16px; box-shadow: 0 1px 2px rgba(15,18,36,0.06), 0 16px 40px -12px rgba(15,18,36,0.18); width: 100%; max-width: 640px; margin: 0 auto; overflow: hidden; display: flex; flex-direction: column; border: 1px solid rgba(15,18,36,0.06); text-align: left; }
+.cfv-doc-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-bottom: 1px solid rgba(15,18,36,0.06); background: linear-gradient(180deg, #FCFBFE 0%, #FFFFFF 100%); }
+.cfv-doc-brand { display: flex; align-items: center; gap: 10px; }
+.cfv-doc-icon { width: 26px; height: 26px; border-radius: 8px; background: #1c1c1c; color: white; display: inline-flex; align-items: center; justify-content: center; }
+.cfv-doc-name { font-family: "Instrument Sans", sans-serif; font-weight: 700; font-size: 14px; color: rgb(28,28,28); }
+.cfv-doc-status { display: flex; align-items: center; gap: 6px; font-family: "Inter", sans-serif; font-size: 12px; color: #22c55e; font-weight: 500; }
+.cfv-doc-pulse { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; animation: cfv-badge-pulse 2s ease-in-out infinite; }
+.cfv-doc-body { display: grid; grid-template-columns: 200px 1fr; }
+.cfv-doc-source-panel { padding: 18px; border-right: 1px solid rgba(15,18,36,0.06); display: flex; flex-direction: column; gap: 10px; background: #fafafa; }
+.cfv-doc-source-thumb { position: relative; border-radius: 10px; overflow: hidden; background: #14161f; aspect-ratio: 4/3; }
+.cfv-doc-thumb-bar { display: flex; gap: 4px; padding: 6px 8px; background: rgba(255,255,255,0.06); }
+.cfv-doc-thumb-bar span { width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,0.3); }
+.cfv-doc-thumb-frame { padding: 8px; display: flex; gap: 6px; }
+.cfv-doc-thumb-side { width: 14px; display: flex; flex-direction: column; gap: 3px; }
+.cfv-doc-thumb-side span { height: 8px; border-radius: 2px; background: rgba(255,255,255,0.15); }
+.cfv-doc-thumb-stats { display: flex; gap: 8px; margin-bottom: 6px; }
+.cfv-doc-thumb-stat-val { font-family: "JetBrains Mono", monospace; font-size: 10px; color: white; font-weight: 700; }
+.cfv-doc-thumb-stat-lbl { font-size: 7px; color: rgba(255,255,255,0.4); }
+.cfv-doc-thumb-chart { display: flex; align-items: flex-end; gap: 3px; height: 30px; }
+.cfv-doc-thumb-chart span { flex: 1; background: rgba(64,67,255,0.4); border-radius: 1px; }
+.cfv-doc-thumb-chart span.cfv-bar-hi { background: #4043FF; }
+.cfv-doc-rec { position: absolute; top: 8px; right: 8px; font-family: "JetBrains Mono", monospace; font-size: 8px; color: #FF4444; font-weight: 700; }
+.cfv-doc-duration { position: absolute; bottom: 6px; right: 8px; font-family: "JetBrains Mono", monospace; font-size: 9px; color: white; }
+.cfv-doc-source-play { position: absolute; bottom: 6px; left: 8px; width: 20px; height: 20px; border-radius: 50%; background: rgba(255,255,255,0.95); display: flex; align-items: center; justify-content: center; color: #1c1c1c; }
+.cfv-doc-source-name { font-family: "Instrument Sans", sans-serif; font-size: 12px; font-weight: 600; color: rgb(28,28,28); }
+.cfv-doc-source-arrow { display: flex; align-items: center; gap: 6px; font-family: "Inter", sans-serif; font-size: 11px; color: #4043FF; font-weight: 600; margin-top: auto; }
+.cfv-doc-output-panel { padding: 18px; display: flex; flex-direction: column; gap: 14px; }
+.cfv-doc-tabs { position: relative; display: flex; gap: 4px; background: #f4f4f6; border-radius: 10px; padding: 4px; }
+.cfv-doc-tab-pill { position: absolute; top: 4px; left: 4px; width: calc(25% - 4px); height: calc(100% - 8px); background: white; border-radius: 7px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); }
+.cfv-doc-tab { position: relative; flex: 1; padding: 7px 4px; font-family: "Instrument Sans", sans-serif; font-size: 11px; font-weight: 600; color: rgba(28,28,28,0.45); border-radius: 7px; z-index: 1; transition: color 0.2s; }
+.cfv-doc-tab.is-active { color: rgb(28,28,28); }
+.cfv-doc-preview { background: #fafafa; border-radius: 10px; padding: 16px; min-height: 140px; font-family: "JetBrains Mono", monospace; font-size: 12px; line-height: 1.9; }
+.cfv-doc-pane { display: none; }
+.cfv-doc-pane.is-active { display: block; }
+.cfv-doc-line { display: block; color: rgba(28,28,28,0.7); }
+.cfv-doc-line-blank { height: 12px; }
+.cfv-doc-line-indent { padding-left: 16px; }
+.cfv-md-tok { font-weight: 700; }
+.cfv-md-h { color: #4043FF; margin-right: 4px; }
+.cfv-md-list { color: #22c55e; margin-right: 6px; }
+.cfv-md-bold { color: rgb(28,28,28); }
+.cfv-html-tag { color: #8b5cf6; }
+
+/* ===== Pricing Section ===== */
+.pricing-section { padding: 96px 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 42px; max-width: 1200px; margin: 0 auto; width: 100%; }
+.billing-toggle-wrap { display: flex; align-items: center; justify-content: center; }
+.billing-toggle { display: inline-flex; align-items: center; background: rgb(236, 236, 236); border-radius: 100px; padding: 4px; gap: 2px; }
+.billing-toggle-btn { position: relative; display: inline-flex; align-items: center; gap: 8px; padding: 8px 20px; border-radius: 100px; background: transparent; color: rgba(28,28,28,0.5); font-size: 15px; font-weight: 500; letter-spacing: -0.15px; transition: background 0.2s, color 0.2s; }
+.billing-toggle-btn.active { background: rgb(28,28,28); color: rgb(246,246,246); }
+.billing-save-badge { display: inline-flex; align-items: center; padding: 3px 8px; border-radius: 100px; background: rgb(64,67,255); color: #fff; font-size: 12px; font-weight: 600; }
+.billing-toggle-btn:not(.active) .billing-save-badge { background: rgba(64,67,255,0.15); color: rgb(64,67,255); }
+
+.pricing-cards { align-items: stretch; display: flex; justify-content: center; gap: 24px; max-width: 1100px; width: 100%; flex-wrap: wrap; }
+.pricing-card { align-items: flex-start; background-color: rgb(246,246,246); border-radius: 24px; box-shadow: rgba(28,28,28,0.01) 0px 0.6px 0.6px, rgba(28,28,28,0.03) 0px 2.29px 2.29px, rgba(28,28,28,0.04) 0px 10px 10px; display: flex; flex-direction: column; gap: 20px; padding: 32px; position: relative; flex: 1; max-width: 320px; min-width: 280px; }
+.pricing-card.popular { border: 1px solid rgb(255,255,255); }
+.popular-badge { position: absolute; top: 20px; right: 20px; background: rgb(64,67,255); color: #fff; padding: 8px 14px; border-radius: 100px; font-size: 14px; font-weight: 500; }
+.pricing-icon { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; background: #1c1c1c; border-radius: 12px; }
+.pricing-title-block { display: flex; flex-direction: column; gap: 4px; }
+.pricing-plan-name { font-size: 24px; font-weight: 500; color: rgb(28,28,28); line-height: 26px; letter-spacing: -0.1px; }
+.pricing-desc { font-size: 15px; color: rgb(28,28,28); font-family: "Inter", sans-serif; line-height: 22px; opacity: 0.6; }
+.pricing-amount { display: flex; align-items: baseline; gap: 4px; }
+.price { font-size: 42px; font-weight: 500; color: rgb(28,28,28); line-height: 46px; letter-spacing: -1.26px; }
+.period { font-size: 15px; color: rgb(28,28,28); font-family: "Inter", sans-serif; opacity: 0.5; white-space: nowrap; }
+.pricing-btn { align-items: center; border-radius: 16px; display: flex; font-size: 16px; font-weight: 500; gap: 8px; justify-content: center; padding: 14px 24px; width: 100%; transition: all 0.2s ease; }
+.pricing-btn-outline { background: transparent; border: 1.5px solid rgba(28,28,28,0.15); color: rgb(28,28,28); }
+.pricing-btn-outline:hover { background: rgba(28,28,28,0.05); border-color: rgba(28,28,28,0.25); }
+.pricing-btn-primary { background: rgb(28,28,28); border: 1px solid rgb(28,28,28); color: #fff; }
+.pricing-btn-primary:hover { background: rgb(64,67,255); border-color: rgb(64,67,255); }
+.pricing-features { list-style: none; display: flex; flex-direction: column; gap: 14px; width: 100%; }
+.pricing-features li { display: flex; align-items: center; gap: 12px; font-size: 15px; color: rgb(28,28,28); font-family: "Inter", sans-serif; font-weight: 500; line-height: 22px; }
+.check-icon { flex-shrink: 0; color: rgb(28,28,28); }
+
+/* ===== Footer ===== */
+.footer { background: var(--bg-dark); color: var(--bg-white); padding: 60px 20px 30px; margin: 60px 20px 20px; border-radius: var(--radius-xl); max-width: 1320px; width: calc(100% - 40px); }
+.footer-content { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 40px; max-width: 1280px; margin: 0 auto 40px; }
+.footer-brand { max-width: 280px; flex-shrink: 0; }
+.footer-logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.15rem; margin-bottom: 16px; }
+.footer-logo .logo-mark { width: 30px; height: 30px; border-radius: 8px; background: linear-gradient(135deg, #4043FF, #7B7DFF); display: flex; align-items: center; justify-content: center; color: white; font-size: 15px; font-weight: 800; }
+.footer-desc { font-size: 0.9rem; color: rgba(255,255,255,0.6); line-height: 1.7; }
+.footer-links { display: flex; gap: 40px; flex-wrap: wrap; }
+.footer-column h4 { font-size: 0.85rem; font-weight: 600; margin-bottom: 16px; color: rgba(255,255,255,0.9); }
+.footer-column a { display: block; font-size: 0.85rem; color: rgba(255,255,255,0.55); margin-bottom: 10px; transition: color 0.2s; }
+.footer-column a:hover { color: var(--bg-white); }
+.footer-bottom { display: flex; justify-content: space-between; align-items: center; max-width: 1280px; margin: 0 auto; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); flex-wrap: wrap; gap: 12px; }
+.footer-bottom p { font-size: 0.85rem; color: rgba(255,255,255,0.6); }
+.social-links { display: flex; gap: 10px; }
+.social-icon { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.1); border-radius: var(--radius-sm); transition: all 0.2s; color: white; }
+.social-icon:hover { background: rgba(255,255,255,0.2); }
+
+/* ===== Responsive ===== */
+@media (max-width: 900px) {
+    .nav-links { display: none; }
+    .hamburger-menu { display: flex; }
+    .hero-title { font-size: 40px; }
+    .section-title { font-size: 34px; }
+    .core-features-body { grid-template-columns: 1fr; }
+    .core-features-nav { position: static; display: flex; overflow-x: auto; gap: 8px; padding-bottom: 8px; }
+    .core-nav-item { white-space: nowrap; padding: 8px 14px; background: white; border-radius: 20px; }
+    .problem-cards { grid-template-columns: 1fr; }
+    .pricing-cards { flex-direction: column; align-items: center; }
+    .footer-content { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="#" class="nav-logo">
+            <span class="logo-mark">D</span>
+            Veridemo
+        </a>
+        <div class="nav-links">
+            <a href="#core-features" class="nav-item"><span>Features</span></a>
+            <a href="#demo" class="nav-item"><span>How it works</span></a>
+            <a href="#pricing" class="nav-item"><span>Pricing</span></a>
+        </div>
+        <div class="nav-right">
+            <a href="#" class="nav-cta">
+                <div class="rolling-text-container">
+                    <div class="rolling-text"><span>Get Started</span></div>
+                    <div class="rolling-text"><span>Get Started</span></div>
+                </div>
+            </a>
+            <button class="hamburger-menu" aria-label="Toggle menu" id="hamburgerBtn">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </div>
+</nav>
+
+<div class="mobile-menu-overlay" id="mobileOverlay">
+    <div class="mobile-menu-content">
+        <a href="#core-features" class="mobile-menu-item">Features</a>
+        <a href="#demo" class="mobile-menu-item">How it works</a>
+        <a href="#pricing" class="mobile-menu-item">Pricing</a>
+        <a href="#" class="mobile-menu-cta">Get Started</a>
+    </div>
+</div>
+
+<!-- Hero -->
+<section class="hero" id="hero">
+    <div class="hero-badge">
+        <div class="badge-live-container">
+            <div class="badge-pulse-wrapper">
+                <div class="badge-pulse-ring"></div>
+                <div class="badge-pulse-dot"></div>
+            </div>
+            <span class="badge-live">Public beta</span>
+        </div>
+        <div class="badge-content"><span class="badge-text">Used by 200+ product teams</span></div>
+    </div>
+
+    <div class="hero-text">
+        <h1 class="hero-title">Demo videos you can<br>actually verify</h1>
+        <p class="hero-subtitle">Every claim traced to your live product. Unverifiable scenes never ship.</p>
+    </div>
+
+    <div class="hero-buttons">
+        <a href="#" class="btn btn-primary rolling-btn">
+            <span class="btn-text-hidden">Get Started</span>
+            <div class="rolling-container">
+                <div class="rolling-text"><span>Get Started</span></div>
+                <div class="rolling-text"><span>Get Started</span></div>
+            </div>
+        </a>
+        <a href="#demo" class="btn btn-secondary rolling-btn">
+            <span class="btn-text-hidden">See it in action</span>
+            <div class="rolling-container">
+                <div class="rolling-text"><span>See it in action</span></div>
+                <div class="rolling-text rolling-text-hover"><span>See it in action</span></div>
+            </div>
+        </a>
+    </div>
+
+    <!-- Live demo console — talks to the ADIP orchestrator -->
+    <div class="demo-console" id="demoConsole">
+        <div class="dc-title">Describe Your Demo</div>
+        <p class="dc-sub">Give us a URL and we'll open it in a real browser, explore it, and build the demo automatically.</p>
+
+        <form id="demoForm">
+            <div class="dc-field">
+                <label class="dc-label" for="dcUrl">Your app URL</label>
+                <input class="dc-input" id="dcUrl" type="url" inputmode="url" spellcheck="false"
+                       placeholder="https://example.com" value="https://example.com" required>
+            </div>
+            <div class="dc-field">
+                <label class="dc-label" for="dcPrompt">What should the demo show?</label>
+                <textarea class="dc-textarea" id="dcPrompt"
+                          placeholder="Walk through the main flow a new user would take.">Walk through the main flow a new user would take.</textarea>
+                <span class="dc-hint">A live crawl takes a minute or two — progress appears below.</span>
+            </div>
+            <button class="dc-submit" id="dcSubmit" type="submit">Create Demo →</button>
+        </form>
+
+        <div class="dc-status-line" id="dcStatus">
+            <span class="dc-badge-dot offline" id="dcDot"></span>
+            <span id="dcStatusText">Checking for the demo engine…</span>
+        </div>
+
+        <div class="dc-run" id="dcRun" hidden>
+            <div class="dc-progress-track"><div class="dc-progress-fill" id="dcFill"></div></div>
+            <div class="dc-steps" id="dcSteps"></div>
+            <div class="dc-error" id="dcError" hidden></div>
+        </div>
+
+        <div class="dc-result" id="dcResult" hidden>
+            <div class="dc-result-head">
+                <span class="dc-result-title" id="dcResultTitle">Your demo</span>
+                <span class="dc-live-tag" id="dcLiveTag" hidden>● Explored live</span>
+            </div>
+            <div class="dc-stats" id="dcStats"></div>
+            <div class="dc-shots" id="dcShots"></div>
+            <div class="dc-demo-frame" id="dcFrameWrap" hidden><iframe id="dcFrame" title="Generated demo"></iframe></div>
+            <div class="dc-actions" id="dcActions"></div>
+        </div>
+    </div>
+
+    <div class="dashboard-mockup" id="demo">
+        <div class="hero-mock-topbar">
+            <div class="hero-mock-dots"><span></span><span></span><span></span></div>
+            <div class="hero-mock-url">app.yourproduct.com/dashboard</div>
+        </div>
+        <div class="hero-mock-body">
+            <div class="hero-mock-side">
+                <div class="side-logo"></div>
+                <div class="side-row active"></div>
+                <div class="side-row"></div>
+                <div class="side-row"></div>
+                <div class="side-row"></div>
+                <div class="side-row"></div>
+            </div>
+            <div class="hero-mock-main">
+                <div class="hero-mock-heading">
+                    <div class="h-line"></div>
+                    <div class="h-cta">+ Create Project</div>
+                </div>
+                <div class="hero-mock-grid">
+                    <div class="hero-mock-card"><div class="c-img"></div><div class="c-line" style="width:80%"></div><div class="c-line" style="width:50%"></div></div>
+                    <div class="hero-mock-card"><div class="c-img"></div><div class="c-line" style="width:70%"></div><div class="c-line" style="width:40%"></div></div>
+                    <div class="hero-mock-card"><div class="c-img"></div><div class="c-line" style="width:60%"></div><div class="c-line" style="width:45%"></div></div>
+                </div>
+                <div class="hero-mock-grid">
+                    <div class="hero-mock-card"><div class="c-img"></div><div class="c-line" style="width:65%"></div><div class="c-line" style="width:35%"></div></div>
+                    <div class="hero-mock-card"><div class="c-img"></div><div class="c-line" style="width:75%"></div><div class="c-line" style="width:55%"></div></div>
+                    <div class="hero-mock-card"><div class="c-img"></div><div class="c-line" style="width:60%"></div><div class="c-line" style="width:30%"></div></div>
+                </div>
+            </div>
+            <div class="hero-mock-cursor">
+                <span class="hero-mock-cursor-label">Veridemo</span>
+                <svg width="20" height="24" viewBox="0 0 18 22" fill="none"><path d="M1 1L1 16.5L5.5 12.5L9.5 20L12.5 18.5L8.5 11L14 10L1 1Z" fill="white" stroke="#1c1c1c" stroke-width="1.5" stroke-linejoin="round"/></svg>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Logo Bar -->
+<section class="logo-bar">
+    <p class="logo-bar-title">Trusted by product teams shipping demos weekly</p>
+    <div class="logo-slider">
+        <span class="logo-chip">Loop</span>
+        <span class="logo-chip">Pixelied</span>
+        <span class="logo-chip">Kuration AI</span>
+        <span class="logo-chip">Migma AI</span>
+        <span class="logo-chip">Premast</span>
+        <span class="logo-chip">Intlayer</span>
+    </div>
+</section>
+
+<!-- Problem Section -->
+<section class="problem-section">
+    <div class="section-header">
+        <div class="section-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 0 1 5 0c0 1.5-1.5 2-2.5 2.5v1"/><circle cx="12" cy="17" r="0.5" fill="currentColor"/></svg>
+            <span>Problem</span>
+        </div>
+        <h2 class="section-title title-sm">Manually screen recording and editing a demo is so 2020</h2>
+        <p class="section-subtitle">Your product changes weekly, but your demo pipeline doesn't.<br>Recording, editing, and re-recording steals your momentum.</p>
+    </div>
+
+    <div class="problem-cards">
+        <div class="problem-card">
+            <div class="problem-image-container">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#4043FF" stroke-width="1.5"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3" fill="#4043FF"/></svg>
+            </div>
+            <h3>Manual screen recording</h3>
+            <p>One mistake means re-recording the whole flow.</p>
+        </div>
+        <div class="problem-card">
+            <div class="problem-image-container">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="1.5"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+            </div>
+            <h3>Editing is the bottleneck</h3>
+            <p>Cuts, zooms, captions. It takes hours to look "pro".</p>
+        </div>
+        <div class="problem-card">
+            <div class="problem-image-container">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="1.5"><rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/></svg>
+            </div>
+            <h3>No time for variants</h3>
+            <p>Sales, onboarding, launches. You need multiple demos, fast.</p>
+        </div>
+    </div>
+
+    <div class="problem-cta">
+        <p>With Veridemo, you skip recording and go straight to a shareable demo.</p>
+        <a href="#" class="btn btn-primary rolling-btn" style="margin-top: 12px;">
+            <span class="btn-text-hidden">Get Started</span>
+            <div class="rolling-container">
+                <div class="rolling-text"><span>Get Started</span></div>
+                <div class="rolling-text"><span>Get Started</span></div>
+            </div>
+        </a>
+    </div>
+</section>
+
+<!-- Core Features — Scroll-driven -->
+<section class="core-features-section" id="core-features">
+    <div class="core-features-header">
+        <div class="section-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l2.4 7.2H22l-6 4.8 2.4 7.2L12 16.4 5.6 21.2 8 14 2 9.2h7.6z"/></svg>
+            <span>Core Features</span>
+        </div>
+        <h2 class="section-title">Everything you need<br><span class="title-italic">to generate demos</span></h2>
+        <p class="section-subtitle">Veridemo doesn't just record your screen. It understands your UI, edits the footage, and outputs a polished video.</p>
+    </div>
+
+    <div class="core-features-body">
+        <nav class="core-features-nav">
+            <ul class="core-nav-list">
+                <li><button class="core-nav-item active" data-feature="autopilot">Autopilot Capture</button></li>
+                <li><button class="core-nav-item" data-feature="editing">Smart Editing</button></li>
+                <li><button class="core-nav-item" data-feature="script-voice">AI Script & Voiceover</button></li>
+                <li><button class="core-nav-item" data-feature="captions">Dynamic Captions</button></li>
+                <li><button class="core-nav-item" data-feature="brand">Brand Kit</button></li>
+                <li><button class="core-nav-item" data-feature="localization">Global Localization</button></li>
+                <li><button class="core-nav-item" data-feature="fine-tune">Fine-Tune Anything</button></li>
+                <li><button class="core-nav-item" data-feature="docusmith">Docusmith</button></li>
+            </ul>
+        </nav>
+
+        <div class="core-features-content">
+
+            <!-- 1. Autopilot Capture -->
+            <div class="core-feature-block" data-feature="autopilot">
+                <div class="core-feature-text">
+                    <h3>Autopilot Capture</h3>
+                    <p>Veridemo browser agent navigates your UI like a real user: clicks, types, scrolls autonomously. Understands context from your product URL and prompt. No manual recording needed.</p>
+                </div>
+                <div class="core-feature-visual script-visual">
+                    <div class="cfv-browser">
+                        <div class="cfv-browser-bar">
+                            <div class="cfv-browser-dots"><span></span><span></span><span></span></div>
+                            <div class="cfv-browser-url">
+                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                                <span>app.yourproduct.com/dashboard</span>
+                            </div>
+                            <div class="cfv-rec-badge"><span class="cfv-rec-dot"></span>REC</div>
+                        </div>
+                        <div class="cfv-browser-viewport">
+                            <div class="cfv-app-sidebar">
+                                <div class="cfv-sb-logo"></div>
+                                <div class="cfv-sb-item cfv-sb-item--active"></div>
+                                <div class="cfv-sb-item"></div><div class="cfv-sb-item"></div><div class="cfv-sb-item"></div>
+                            </div>
+                            <div class="cfv-app-main">
+                                <div class="cfv-app-topbar"><div class="cfv-app-title"></div><div class="cfv-app-cta">+ Create Project</div></div>
+                                <div class="cfv-app-content">
+                                    <div class="cfv-app-card"><div class="cfv-app-card-img"></div><div class="cfv-app-card-line cfv-app-card-line--w80"></div><div class="cfv-app-card-line cfv-app-card-line--w50"></div></div>
+                                    <div class="cfv-app-card"><div class="cfv-app-card-img"></div><div class="cfv-app-card-line cfv-app-card-line--w70"></div><div class="cfv-app-card-line cfv-app-card-line--w40"></div></div>
+                                </div>
+                            </div>
+                            <div class="cfv-cursor">
+                                <span class="cfv-cursor-label">Veridemo</span>
+                                <svg width="18" height="22" viewBox="0 0 18 22" fill="none"><path d="M1 1L1 16.5L5.5 12.5L9.5 20L12.5 18.5L8.5 11L14 10L1 1Z" fill="white" stroke="#1c1c1c" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                                <div class="cfv-cursor-ripple"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Smart Editing -->
+            <div class="core-feature-block" data-feature="editing">
+                <div class="core-feature-text">
+                    <h3>Smart Editing</h3>
+                    <p>Auto-cuts dead time. UI-aware zooms on key actions. Polished pacing and cinematic flow. No timeline, no editing software required.</p>
+                </div>
+                <div class="core-feature-visual zoom-visual">
+                    <div class="cfv-editing-card">
+                        <div class="cfv-editing-header"><span class="cfv-editing-title">Smart Timeline</span><span class="cfv-editing-time">0:00 / 0:45</span></div>
+                        <div class="cfv-timeline-tracks">
+                            <div class="cfv-track"><span class="cfv-track-label">Video</span><div class="cfv-track-bar"><div class="cfv-clip cfv-clip--blue" style="width:28%; left:0;"></div><div class="cfv-clip cfv-clip--blue" style="width:38%; left:32%;"></div><div class="cfv-clip cfv-clip--blue" style="width:24%; left:74%;"></div></div></div>
+                            <div class="cfv-track"><span class="cfv-track-label">Zoom</span><div class="cfv-track-bar"><div class="cfv-clip cfv-clip--purple" style="width:12%; left:18%;"></div><div class="cfv-clip cfv-clip--purple" style="width:8%; left:58%;"></div><div class="cfv-clip cfv-clip--purple" style="width:10%; left:82%;"></div></div></div>
+                            <div class="cfv-track"><span class="cfv-track-label">Audio</span><div class="cfv-track-bar"><div class="cfv-waveform-mini"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></div></div>
+                            <div class="cfv-playhead"></div>
+                        </div>
+                        <div class="cfv-timeline-footer"><span>0:00</span><span>0:15</span><span>0:30</span><span>0:45</span></div>
+                        <div class="cfv-editing-tags"><span class="cfv-tag cfv-tag--cut">Auto-cut</span><span class="cfv-tag cfv-tag--zoom">UI Zoom</span><span class="cfv-tag cfv-tag--pacing">Smart Pacing</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. AI Script & Voiceover -->
+            <div class="core-feature-block" data-feature="script-voice">
+                <div class="core-feature-text">
+                    <h3>AI Script & Voiceover</h3>
+                    <p>Generate polished narration from your prompt — Veridemo structures the story, fixes grammar, removes filler. Add studio-quality voiceover in natural-sounding voices. Available in 29 languages.</p>
+                </div>
+                <div class="core-feature-visual voiceover-visual">
+                    <div class="script-editor">
+                        <div class="script-line cfv-line-reveal" style="animation-delay:0s;"><span class="script-text-dim">Welcome to</span><span class="script-text-bold">your dashboard.</span><span class="script-sparkle">&#10024;</span></div>
+                        <div class="script-line cfv-line-reveal" style="animation-delay:0.2s;"><span class="script-text-dim">Let me show you how to</span></div>
+                        <div class="script-line cfv-line-reveal" style="animation-delay:0.4s;"><span class="script-text-highlight">create your first project</span><span class="cfv-script-cursor">|</span></div>
+                    </div>
+                    <div class="voice-selector" style="margin-top:20px;">
+                        <div class="voice-row active-voice">
+                            <span class="voice-play active-play"><svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M6 4l15 8-15 8z"/></svg></span>
+                            <span class="voice-name">James</span>
+                            <div class="cfv-waveform"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+                            <div class="voice-tags"><span class="voice-tag">Male</span><span class="voice-tag">🇬🇧 English</span></div>
+                        </div>
+                        <div class="voice-row"><span class="voice-play">&#9654;</span><span class="voice-name">Priya</span><div class="voice-tags"><span class="voice-tag">Female</span><span class="voice-tag">🇮🇳 Hindi</span></div></div>
+                        <div class="voice-row"><span class="voice-play">&#9654;</span><span class="voice-name">Yuki</span><div class="voice-tags"><span class="voice-tag">Female</span><span class="voice-tag">🇯🇵 Japanese</span></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Dynamic Captions -->
+            <div class="core-feature-block" data-feature="captions">
+                <div class="core-feature-text">
+                    <h3>Dynamic Captions</h3>
+                    <p>Auto-generated subtitles that sync perfectly with on-screen actions in 29 languages. Customizable styles, positioning, and formatting. Looks professional out of the box.</p>
+                </div>
+                <div class="core-feature-visual guides-visual">
+                    <div class="zoom-browser">
+                        <div class="zoom-browser-bar"><span class="zoom-dot"></span><span class="zoom-dot"></span><span class="zoom-dot"></span><div class="zoom-url-bar">app.veridemo.dev/dashboard</div></div>
+                        <div style="position:relative; background:#f8f8f8; padding:30px; min-height: 260px;">
+                            <div style="background:white; border-radius:8px; padding:20px; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+                                <div style="height:100px; background:linear-gradient(135deg,#4043FF,#7B7DFF); border-radius:4px; margin-bottom:15px;"></div>
+                                <div style="height:8px; background:#e0e0e0; border-radius:4px; width:80%; margin-bottom:8px;"></div>
+                                <div style="height:8px; background:#e0e0e0; border-radius:4px; width:60%;"></div>
+                            </div>
+                            <div class="cfv-caption-bar">
+                                <div class="cfv-caption-words">
+                                    <span class="cfv-caption-word cfv-caption-word--1">Click</span>
+                                    <span class="cfv-caption-word cfv-caption-word--2">"Create Project"</span>
+                                    <span class="cfv-caption-word cfv-caption-word--3">to</span>
+                                    <span class="cfv-caption-word cfv-caption-word--4">get started</span>
+                                </div>
+                            </div>
+                            <div class="cfv-lang-switcher"><span class="cfv-lang cfv-lang--active">🇬🇧</span><span class="cfv-lang">🇪🇸</span><span class="cfv-lang">🇫🇷</span><span class="cfv-lang">🇯🇵</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. Brand Kit -->
+            <div class="core-feature-block" data-feature="brand">
+                <div class="core-feature-text">
+                    <h3>Brand Kit</h3>
+                    <p>Apply your logo, colors, fonts, and custom intro/outro. Every demo ships looking exactly like your team made it: consistent, professional, and on-brand.</p>
+                </div>
+                <div class="core-feature-visual brand-visual">
+                    <div class="brand-panel">
+                        <div class="brand-panel-header"><span>Brand Kit</span><span class="brand-applied-tag">&#10003; Applied</span></div>
+                        <div class="brand-colors-row">
+                            <div class="brand-swatch" style="background:#4043FF; animation-delay:0s;"></div>
+                            <div class="brand-swatch" style="background:#1a1a1a; animation-delay:0.1s;"></div>
+                            <div class="brand-swatch" style="background:#f5f5f5; border:1px solid #e0e0e0; animation-delay:0.2s;"></div>
+                            <div class="brand-swatch" style="background:linear-gradient(135deg,#4043FF,#7B7DFF); animation-delay:0.3s;"></div>
+                        </div>
+                        <div class="brand-font-preview"><span class="brand-font-label">Primary Font</span><span class="brand-font-sample">Instrument Sans</span></div>
+                        <div class="brand-items-list">
+                            <div class="brand-check-item" style="animation-delay:0.1s;"><span class="brand-check">&#10003;</span> Logo</div>
+                            <div class="brand-check-item" style="animation-delay:0.25s;"><span class="brand-check">&#10003;</span> Colors</div>
+                            <div class="brand-check-item" style="animation-delay:0.4s;"><span class="brand-check">&#10003;</span> Intro / Outro</div>
+                            <div class="brand-check-item" style="animation-delay:0.55s;"><span class="brand-check">&#10003;</span> Caption Style</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. Global Localization -->
+            <div class="core-feature-block" data-feature="localization">
+                <div class="core-feature-text">
+                    <h3>Global Localization</h3>
+                    <p>Generate demos in 29 languages: captions, on-screen text, and voiceover. Reach global audiences without re-recording for each market.</p>
+                </div>
+                <div class="core-feature-visual publish-visual">
+                    <div class="brand-panel">
+                        <div class="brand-panel-header"><span>Language Options</span><span class="brand-applied-tag">&#10003; 29 Available</span></div>
+                        <div class="cfv-locale-grid">
+                            <div class="cfv-locale-card" style="animation-delay:0s;"><span class="cfv-locale-flag">🇬🇧</span><div class="cfv-locale-info"><span class="cfv-locale-name">English</span><div class="cfv-locale-bar"><div class="cfv-locale-fill" style="width:100%;"></div></div></div><span class="cfv-locale-done">&#10003;</span></div>
+                            <div class="cfv-locale-card" style="animation-delay:0.08s;"><span class="cfv-locale-flag">🇪🇸</span><div class="cfv-locale-info"><span class="cfv-locale-name">Spanish</span><div class="cfv-locale-bar"><div class="cfv-locale-fill" style="width:100%;"></div></div></div><span class="cfv-locale-done">&#10003;</span></div>
+                            <div class="cfv-locale-card" style="animation-delay:0.16s;"><span class="cfv-locale-flag">🇫🇷</span><div class="cfv-locale-info"><span class="cfv-locale-name">French</span><div class="cfv-locale-bar"><div class="cfv-locale-fill" style="width:92%;"></div></div></div><span class="cfv-locale-done">&#10003;</span></div>
+                            <div class="cfv-locale-card" style="animation-delay:0.24s;"><span class="cfv-locale-flag">🇩🇪</span><div class="cfv-locale-info"><span class="cfv-locale-name">German</span><div class="cfv-locale-bar"><div class="cfv-locale-fill" style="width:88%;"></div></div></div><span class="cfv-locale-done">&#10003;</span></div>
+                            <div class="cfv-locale-card" style="animation-delay:0.32s;"><span class="cfv-locale-flag">🇯🇵</span><div class="cfv-locale-info"><span class="cfv-locale-name">Japanese</span><div class="cfv-locale-bar"><div class="cfv-locale-fill cfv-locale-fill--active" style="width:65%;"></div></div></div></div>
+                            <div class="cfv-locale-card" style="animation-delay:0.4s;"><span class="cfv-locale-flag">🇰🇷</span><div class="cfv-locale-info"><span class="cfv-locale-name">Korean</span><div class="cfv-locale-bar"><div class="cfv-locale-fill cfv-locale-fill--active" style="width:42%;"></div></div></div></div>
+                        </div>
+                        <div class="cfv-locale-more">+ 23 more languages including Arabic, Hindi, Portuguese, Turkish, Russian, Vietnamese & more</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7. Fine-Tune Anything -->
+            <div class="core-feature-block" data-feature="fine-tune">
+                <div class="core-feature-text">
+                    <h3>Fine-Tune Anything</h3>
+                    <p>AI gets it right 95% of the time. For the other 5%? Edit narration, captions, voiceover, zoom effects, or background sounds. Full control when you need it, without starting from scratch.</p>
+                </div>
+                <div class="core-feature-visual publish-visual">
+                    <div class="cfv-finetune-card">
+                        <div class="cfv-finetune-header"><span class="cfv-finetune-title">Timeline Editor</span>
+                            <div class="cfv-finetune-actions"><div class="cfv-finetune-btn">↶</div><div class="cfv-finetune-btn">↷</div></div>
+                        </div>
+                        <div class="cfv-finetune-timeline">
+                            <div class="cfv-ft-clips">
+                                <div class="cfv-ft-clip cfv-ft-clip--1" style="flex:3;"></div>
+                                <div class="cfv-ft-clip cfv-ft-clip--2" style="flex:2;"></div>
+                                <div class="cfv-ft-clip cfv-ft-clip--3" style="flex:2;"></div>
+                                <div class="cfv-ft-playhead"></div>
+                            </div>
+                            <div class="cfv-ft-times"><span>0:00</span><span>0:15</span><span>0:30</span><span>0:45</span></div>
+                        </div>
+                        <div class="cfv-finetune-controls">
+                            <div class="cfv-ft-control" style="animation-delay:0s;"><div class="cfv-ft-control-label">Captions</div><div class="cfv-ft-control-sub">Edit text & style</div></div>
+                            <div class="cfv-ft-control" style="animation-delay:0.06s;"><div class="cfv-ft-control-label">Voiceover</div><div class="cfv-ft-control-sub">Change narration</div></div>
+                            <div class="cfv-ft-control" style="animation-delay:0.12s;"><div class="cfv-ft-control-label">Zooms</div><div class="cfv-ft-control-sub">Adjust effects</div></div>
+                            <div class="cfv-ft-control" style="animation-delay:0.18s;"><div class="cfv-ft-control-label">Language</div><div class="cfv-ft-control-sub">Switch translation</div></div>
+                            <div class="cfv-ft-control" style="animation-delay:0.24s;"><div class="cfv-ft-control-label">Audio</div><div class="cfv-ft-control-sub">Add BG sounds</div></div>
+                            <div class="cfv-ft-control" style="animation-delay:0.3s;"><div class="cfv-ft-control-label">Narration</div><div class="cfv-ft-control-sub">Refine script</div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 8. Docusmith -->
+            <div class="core-feature-block" data-feature="docusmith">
+                <div class="core-feature-text">
+                    <h3>Docusmith</h3>
+                    <p>Run a demo, get a doc. Publish it to your help center, drop it on your site, let Google index it. Docusmith generates clean Markdown, HTML, plain text, or PDF from your demo.</p>
+                </div>
+                <div class="core-feature-visual docs-visual">
+                    <div class="cfv-doc-card" id="docCard">
+                        <div class="cfv-doc-header">
+                            <div class="cfv-doc-brand"><span class="cfv-doc-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span><span class="cfv-doc-name">Docusmith</span></div>
+                            <div class="cfv-doc-status"><span class="cfv-doc-pulse"></span><span>Ready to export</span></div>
+                        </div>
+                        <div class="cfv-doc-body">
+                            <aside class="cfv-doc-source-panel">
+                                <div class="cfv-doc-source-thumb">
+                                    <div class="cfv-doc-thumb-bar"><span></span><span></span><span></span></div>
+                                    <div class="cfv-doc-thumb-frame">
+                                        <div class="cfv-doc-thumb-side"><span></span><span></span><span></span><span></span></div>
+                                        <div style="flex:1; padding: 4px 8px;">
+                                            <div class="cfv-doc-thumb-stats">
+                                                <div class="cfv-doc-thumb-stat"><div class="cfv-doc-thumb-stat-val">4.2k</div><div class="cfv-doc-thumb-stat-lbl">users</div></div>
+                                                <div class="cfv-doc-thumb-stat"><div class="cfv-doc-thumb-stat-val">$12k</div><div class="cfv-doc-thumb-stat-lbl">MRR</div></div>
+                                            </div>
+                                            <div class="cfv-doc-thumb-chart"><span style="height:50%"></span><span style="height:65%"></span><span style="height:45%"></span><span class="cfv-bar-hi" style="height:85%"></span><span style="height:60%"></span><span class="cfv-bar-hi" style="height:92%"></span><span style="height:72%"></span></div>
+                                        </div>
+                                    </div>
+                                    <span class="cfv-doc-rec">REC</span>
+                                    <span class="cfv-doc-source-play"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 22 12 6 20 6 4"/></svg></span>
+                                    <span class="cfv-doc-duration">2:34</span>
+                                </div>
+                                <div class="cfv-doc-source-name">Onboarding Demo</div>
+                                <div class="cfv-doc-source-arrow"><span>Generate Doc</span>
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                                </div>
+                            </aside>
+                            <div class="cfv-doc-output-panel">
+                                <div class="cfv-doc-tabs" role="tablist">
+                                    <span class="cfv-doc-tab-pill"></span>
+                                    <button type="button" class="cfv-doc-tab is-active" data-format="md">Markdown</button>
+                                    <button type="button" class="cfv-doc-tab" data-format="html">HTML</button>
+                                    <button type="button" class="cfv-doc-tab" data-format="txt">Plain Text</button>
+                                    <button type="button" class="cfv-doc-tab" data-format="pdf">PDF</button>
+                                </div>
+                                <div class="cfv-doc-preview">
+                                    <div class="cfv-doc-pane is-active" data-pane="md">
+                                        <span class="cfv-doc-line"><span class="cfv-md-tok cfv-md-h">#</span> Create your first project</span>
+                                        <span class="cfv-doc-line cfv-doc-line-blank"></span>
+                                        <span class="cfv-doc-line">You can create a project in seconds.</span>
+                                        <span class="cfv-doc-line cfv-doc-line-blank"></span>
+                                        <span class="cfv-doc-line"><span class="cfv-md-tok cfv-md-h">##</span> Quick start</span>
+                                        <span class="cfv-doc-line"><span class="cfv-md-tok cfv-md-list">-</span> Open the dashboard</span>
+                                        <span class="cfv-doc-line"><span class="cfv-md-tok cfv-md-list">-</span> Click <span class="cfv-md-tok cfv-md-bold">**+ New Project**</span></span>
+                                    </div>
+                                    <div class="cfv-doc-pane" data-pane="html">
+                                        <span class="cfv-doc-line"><span class="cfv-md-tok cfv-html-tag">&lt;h1&gt;</span>Create your first project<span class="cfv-md-tok cfv-html-tag">&lt;/h1&gt;</span></span>
+                                        <span class="cfv-doc-line"><span class="cfv-md-tok cfv-html-tag">&lt;p&gt;</span>You can create a project in seconds.<span class="cfv-md-tok cfv-html-tag">&lt;/p&gt;</span></span>
+                                        <span class="cfv-doc-line"><span class="cfv-md-tok cfv-html-tag">&lt;h2&gt;</span>Quick start<span class="cfv-md-tok cfv-html-tag">&lt;/h2&gt;</span></span>
+                                    </div>
+                                    <div class="cfv-doc-pane" data-pane="txt">
+                                        <span class="cfv-doc-line">Create your first project</span>
+                                        <span class="cfv-doc-line">=========================</span>
+                                        <span class="cfv-doc-line cfv-doc-line-blank"></span>
+                                        <span class="cfv-doc-line">You can create a project in seconds.</span>
+                                        <span class="cfv-doc-line cfv-doc-line-blank"></span>
+                                        <span class="cfv-doc-line">QUICK START</span>
+                                        <span class="cfv-doc-line">· Open the dashboard</span>
+                                    </div>
+                                    <div class="cfv-doc-pane" data-pane="pdf">
+                                        <span class="cfv-doc-line" style="color:rgba(28,28,28,0.4);">📄 create-first-project.pdf</span>
+                                        <span class="cfv-doc-line cfv-doc-line-blank"></span>
+                                        <span class="cfv-doc-line">Ready to download · 86 KB</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Pricing -->
+<section class="pricing-section" id="pricing">
+    <div class="section-header">
+        <div class="section-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M2 10h20"/></svg>
+            <span>Pricing</span>
+        </div>
+        <h2 class="section-title">Simple pricing.<br>Pay per demo.</h2>
+        <p class="section-subtitle">Start free. Scale with minutes. No hidden fees.</p>
+    </div>
+
+    <div class="billing-toggle-wrap">
+        <div class="billing-toggle">
+            <button class="billing-toggle-btn active" data-period="monthly">Monthly</button>
+            <button class="billing-toggle-btn" data-period="yearly">Yearly <span class="billing-save-badge">Save 20%</span></button>
+        </div>
+    </div>
+
+    <div class="pricing-cards">
+        <div class="pricing-card">
+            <div class="pricing-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+            <div class="pricing-title-block"><h3 class="pricing-plan-name">Free Trial</h3><p class="pricing-desc">Test Veridemo for 3 days</p></div>
+            <div class="pricing-amount"><span class="price">$0</span><span class="period">/ 3 days</span></div>
+            <a href="#" class="pricing-btn pricing-btn-outline">Get Started</a>
+            <ul class="pricing-features">
+                <li><svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>2 AI minutes</li>
+                <li><svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>1 demo</li>
+                <li><svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>1080p export quality</li>
+            </ul>
+        </div>
+
+        <div class="pricing-card">
+            <div class="pricing-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+            <div class="pricing-title-block"><h3 class="pricing-plan-name">Starter</h3><p class="pricing-desc">For founders and solo creators</p></div>
+            <div class="pricing-amount"><span class="price">$40</span><span class="period">/ month</span></div>
+            <a href="#" class="pricing-btn pricing-btn-outline">Get Started</a>
+            <ul class="pricing-features">
+                <li><svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>20 AI minutes / month</li>
+                <li><svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>10 demos / month</li>
+                <li><svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>No watermark</li>
+                <li><svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Custom branding</li>
+                <li><svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Multi-language (29)</li>
+            </ul>
+        </div>
+
+        <div class="pricing-card popular">
+            <span class="popular-badge">Popular</span>
+            <div class="pricing-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+            <div class="pricing-title-block"><h3 class="pricing-plan-name">Pro</h3><p class="pricing-desc">For teams shipping weekly</p></div>
+            <div class="pricing-amount"><span class="price">$99</span><span class="period">/ month</span></div>
+            <a href="#" class="pricing-btn pricing-btn-primary">Get Started</a>
+            <ul class="pricing-features">
+                <li><svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>50 AI minutes / month</li>
+                <li><svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>50 demos / month</li>
+                <li><svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Export in 1440p (2K)</li>
+                <li><svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Docusmith exports</li>
+                <li><svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Priority support</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-brand">
+            <div class="footer-logo"><span class="logo-mark">D</span>Veridemo</div>
+            <p class="footer-desc">The AI agent that turns any URL into a polished demo video. No recording. No editing. Just results.</p>
+        </div>
+        <div class="footer-links">
+            <div class="footer-column">
+                <h4>Pages</h4>
+                <a href="#core-features">Features</a>
+                <a href="#demo">How it works</a>
+                <a href="#pricing">Pricing</a>
+            </div>
+            <div class="footer-column">
+                <h4>Company</h4>
+                <a href="#">About</a>
+                <a href="#">Blog</a>
+                <a href="#">Contact</a>
+            </div>
+            <div class="footer-column">
+                <h4>Legal</h4>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Use</a>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© 2026 Veridemo. All rights reserved.</p>
+        <div class="social-links">
+            <a href="#" class="social-icon" aria-label="X"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.6 8.7L23.3 22h-7l-5.5-7.2L4.5 22H1.4l8.2-9.3L1 2h7.2l5 6.6L18.9 2z"/></svg></a>
+            <a href="#" class="social-icon" aria-label="LinkedIn"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.6v1.7h.05c.5-.95 1.75-1.95 3.6-1.95 3.85 0 4.55 2.5 4.55 5.75V21h-4v-5.5c0-1.3-.03-3-1.85-3-1.85 0-2.15 1.4-2.15 2.9V21H9z"/></svg></a>
+        </div>
+    </div>
+</footer>
+
+<script>
+// ===== Hero staggered fade-in on load =====
+window.addEventListener('load', () => {
+    document.querySelectorAll('.hero-badge, .hero-title, .hero-subtitle, .hero-buttons').forEach(el => {
+        el.style.animationPlayState = 'running';
+    });
+});
+
+// ===== Mobile menu toggle =====
+(() => {
+    const hamburger = document.getElementById('hamburgerBtn');
+    const overlay = document.getElementById('mobileOverlay');
+    if (!hamburger || !overlay) return;
+    hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        overlay.classList.toggle('active');
+    });
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) { hamburger.classList.remove('active'); overlay.classList.remove('active'); }
+    });
+    document.querySelectorAll('.mobile-menu-item, .mobile-menu-cta').forEach(item => {
+        item.addEventListener('click', () => { hamburger.classList.remove('active'); overlay.classList.remove('active'); });
+    });
+})();
+
+// ===== Core Features: Scroll-driven sticky nav (matches veridemo.dev exactly) =====
+(() => {
+    const section = document.querySelector('.core-features-section');
+    if (!section) return;
+
+    const navItems = Array.from(section.querySelectorAll('.core-nav-item'));
+    const blocks = Array.from(section.querySelectorAll('.core-feature-block'));
+    if (!navItems.length || !blocks.length) return;
+
+    navItems.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const feature = btn.dataset.feature;
+            const target = section.querySelector(`.core-feature-block[data-feature="${feature}"]`);
+            if (target) {
+                const offset = target.getBoundingClientRect().top + window.scrollY - 140;
+                window.scrollTo({ top: offset, behavior: 'smooth' });
+            }
+        });
+    });
+
+    const setActiveNav = (featureName) => {
+        navItems.forEach(btn => btn.classList.toggle('active', btn.dataset.feature === featureName));
+    };
+
+    const blockObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) entry.target.classList.add('in-view');
+        });
+    }, { threshold: 0.15 });
+    blocks.forEach(block => blockObserver.observe(block));
+
+    let scrollTimer = null;
+    const updateActiveFromScroll = () => {
+        const viewportH = window.innerHeight;
+        let bestBlock = null;
+        let bestScore = -Infinity;
+        blocks.forEach(block => {
+            const rect = block.getBoundingClientRect();
+            // Fallback reveal check alongside blockObserver, in case IntersectionObserver
+            // never fires (e.g. a backgrounded/non-composited tab).
+            if (rect.top < viewportH && rect.bottom > 0) block.classList.add('in-view');
+            const blockCenter = rect.top + rect.height / 2;
+            const viewportCenter = viewportH * 0.4;
+            const score = -Math.abs(blockCenter - viewportCenter);
+            if (rect.top < viewportH * 0.7 && rect.bottom > viewportH * 0.1 && score > bestScore) {
+                bestScore = score;
+                bestBlock = block;
+            }
+        });
+        if (bestBlock) setActiveNav(bestBlock.dataset.feature);
+    };
+    const onScroll = () => {
+        if (scrollTimer) return;
+        scrollTimer = setTimeout(() => { scrollTimer = null; updateActiveFromScroll(); }, 50);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    updateActiveFromScroll();
+    // Timer fallback: keeps active state correct even if the scroll event is throttled
+    // (e.g. backgrounded/non-composited tabs) instead of relying on scroll events alone.
+    setInterval(updateActiveFromScroll, 300);
+})();
+
+// ===== Docusmith export tabs — auto-cycle + click =====
+(() => {
+    const card = document.getElementById('docCard');
+    if (!card) return;
+    const tabs = Array.from(card.querySelectorAll('.cfv-doc-tab'));
+    const panes = Array.from(card.querySelectorAll('.cfv-doc-pane'));
+    const pill = card.querySelector('.cfv-doc-tab-pill');
+    if (!tabs.length) return;
+
+    const setActive = (index) => {
+        const tab = tabs[index];
+        if (!tab) return;
+        const fmt = tab.dataset.format;
+        tabs.forEach((t, i) => t.classList.toggle('is-active', i === index));
+        panes.forEach(p => p.classList.toggle('is-active', p.dataset.pane === fmt));
+        if (pill) pill.style.transform = `translateX(calc(${index * 100}% + ${index * 4}px))`;
+    };
+
+    let currentIndex = 0;
+    let pauseUntil = 0;
+    setInterval(() => {
+        if (Date.now() < pauseUntil) return;
+        currentIndex = (currentIndex + 1) % tabs.length;
+        setActive(currentIndex);
+    }, 3500);
+
+    tabs.forEach((tab, i) => {
+        tab.addEventListener('click', () => {
+            currentIndex = i;
+            setActive(currentIndex);
+            pauseUntil = Date.now() + 9000;
+        });
+    });
+})();
+
+// ===== Pricing billing toggle (monthly/yearly price swap) =====
+(() => {
+    const toggleBtns = document.querySelectorAll('.billing-toggle-btn');
+    if (!toggleBtns.length) return;
+    const prices = { monthly: { starter: 40, pro: 99 }, yearly: { starter: 32, pro: 79 } };
+    toggleBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            toggleBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const period = btn.dataset.period;
+            const cards = document.querySelectorAll('.pricing-card');
+            const priceEls = [cards[1]?.querySelector('.price'), cards[2]?.querySelector('.price')];
+            const periodEls = [cards[1]?.querySelector('.period'), cards[2]?.querySelector('.period')];
+            const vals = period === 'yearly' ? [prices.yearly.starter, prices.yearly.pro] : [prices.monthly.starter, prices.monthly.pro];
+            priceEls.forEach((el, i) => { if (el) el.textContent = '$' + vals[i]; });
+            periodEls.forEach(el => { if (el) el.textContent = period === 'yearly' ? '/ month, billed yearly' : '/ month'; });
+        });
+    });
+})();
+
+// ===== Live demo console — drives the ADIP orchestrator =====
+(() => {
+    const form = document.getElementById('demoForm');
+    if (!form) return;
+
+    // API base: ?api=... wins, then a global override. Default to same-origin so a
+    // single deployed URL serves both the page and the API; fall back to the local
+    // dev port only when the page is opened straight off the filesystem.
+    // The API runs as its own Zerops service, so the base URL is baked in at build
+    // time. The placeholder stays literal in dev, where the API is same-origin.
+    const BUILD_API = '__API_BASE__';
+    const API = (new URLSearchParams(location.search).get('api')
+        || window.ADIP_API
+        || (BUILD_API.indexOf('__API') === -1 ? BUILD_API : '')
+        || (location.protocol === 'file:' ? 'http://localhost:8080' : location.origin)
+    ).replace(/\/$/, '');
+
+    const el = id => document.getElementById(id);
+    const urlIn = el('dcUrl'), promptIn = el('dcPrompt'), submit = el('dcSubmit');
+    const dot = el('dcDot'), statusText = el('dcStatusText');
+    const run = el('dcRun'), fill = el('dcFill'), stepsWrap = el('dcSteps'), errBox = el('dcError');
+    const result = el('dcResult'), stats = el('dcStats'), shots = el('dcShots');
+    const frameWrap = el('dcFrameWrap'), frame = el('dcFrame'), actions = el('dcActions');
+    const liveTag = el('dcLiveTag'), resultTitle = el('dcResultTitle');
+
+    let engineUp = false;
+    let polling = null;
+
+    const setStatus = (text, state) => {
+        statusText.textContent = text;
+        dot.className = 'dc-badge-dot' + (state ? ' ' + state : '');
+    };
+
+    const showError = msg => {
+        errBox.hidden = false;
+        errBox.textContent = msg;
+    };
+
+    async function checkEngine() {
+        try {
+            const r = await fetch(API + '/health', { signal: AbortSignal.timeout(4000) });
+            if (!r.ok) throw new Error('HTTP ' + r.status);
+            const h = await r.json();
+            engineUp = true;
+            const bits = [h.live_exploration ? 'live browser exploration' : 'topic mode'];
+            bits.push(h.llm_configured ? 'AI generation on' : 'AI generation off (no API key)');
+            setStatus('Demo engine connected — ' + bits.join(' · '), '');
+        } catch (e) {
+            engineUp = false;
+            setStatus('Demo engine not running. Start the orchestrator, then reload.', 'offline');
+        }
+    }
+
+    function renderSteps(progress) {
+        fill.style.width = (progress.percent || 0) + '%';
+        stepsWrap.innerHTML = '';
+        (progress.steps || []).forEach(s => {
+            const cls = s.status === 'COMPLETED' ? 'done'
+                : s.status === 'RUNNING' ? 'running'
+                : s.status === 'FAILED' ? 'failed' : '';
+            const mark = s.status === 'COMPLETED' ? '✓' : s.status === 'FAILED' ? '!' : '';
+            const row = document.createElement('div');
+            row.className = 'dc-step ' + cls;
+            row.innerHTML = `<span class="dc-step-icon">${mark}</span><span></span>`;
+            row.lastElementChild.textContent = s.label || s.agent;
+            stepsWrap.appendChild(row);
+        });
+    }
+
+    function renderResult(data) {
+        const r = data.result || {};
+        result.hidden = false;
+        liveTag.hidden = !r.explored_live;
+        resultTitle.textContent = r.entity ? `Demo of ${r.entity}` : 'Your demo';
+
+        const s = r.summary || {};
+        const cells = [
+            ['Pages', s.total_pages_discovered],
+            ['Elements', s.total_elements_extracted],
+            ['Forms', s.total_forms_found],
+            ['Flows', s.total_workflows_detected],
+            ['Shots', s.total_screenshots_taken],
+        ].filter(([, v]) => v !== undefined && v !== null);
+        stats.innerHTML = '';
+        cells.forEach(([label, value]) => {
+            const d = document.createElement('div');
+            d.className = 'dc-stat';
+            d.innerHTML = `<div class="dc-stat-v"></div><div class="dc-stat-l"></div>`;
+            d.firstElementChild.textContent = value;
+            d.lastElementChild.textContent = label;
+            stats.appendChild(d);
+        });
+
+        shots.innerHTML = '';
+        (r.screenshots || []).forEach(sh => {
+            if (!sh.artifact_path) return;
+            const card = document.createElement('div');
+            card.className = 'dc-shot';
+            const img = document.createElement('img');
+            img.src = `${API}/artifacts/${sh.artifact_path}`;
+            img.alt = sh.url || 'screenshot';
+            // Eager: these only render after the user starts a run and are small,
+            // so lazy-loading buys nothing and can leave visible blank tiles.
+            img.loading = 'eager';
+            const cap = document.createElement('div');
+            cap.className = 'dc-shot-cap';
+            cap.textContent = sh.url || '';
+            card.append(img, cap);
+            shots.appendChild(card);
+        });
+
+        // Prefer the rendered MP4; fall back to the storyboard when no video exists.
+        frameWrap.innerHTML = '';
+        const videoPath = r.demo && r.demo.video_artifact_path;
+        if (videoPath) {
+            frameWrap.hidden = false;
+            const v = document.createElement('video');
+            v.src = `${API}/artifacts/${videoPath}`;
+            v.controls = true; v.playsInline = true; v.preload = 'metadata';
+            v.style.cssText = 'width:100%;height:100%;display:block;background:#000';
+            frameWrap.appendChild(v);
+        } else if (r.demo && r.demo.artifact_path) {
+            frameWrap.hidden = false;
+            const f = document.createElement('iframe');
+            f.src = `${API}/artifacts/${r.demo.artifact_path}`;
+            f.title = 'Generated demo';
+            f.style.cssText = 'width:100%;height:100%;border:none;display:block';
+            frameWrap.appendChild(f);
+        }
+
+        // Verification is the headline claim of this pipeline, so show it even
+        // (especially) when it failed.
+        const ver = r.verification;
+        if (ver && ver.status) {
+            const box = document.createElement('div');
+            const failed = ver.status === 'FAILED';
+            const none = ver.status === 'NO_CLAIMS';
+            box.style.cssText =
+                'margin:12px 0;padding:12px 14px;border-radius:10px;font-family:Inter,sans-serif;'
+                + 'font-size:13px;line-height:1.5;border:1px solid '
+                + (failed ? 'rgba(239,68,68,.3);background:rgba(239,68,68,.07);color:#b91c1c'
+                   : none ? 'rgba(245,158,11,.3);background:rgba(245,158,11,.07);color:#92400e'
+                          : 'rgba(34,197,94,.3);background:rgba(34,197,94,.07);color:#15803d');
+            const label = failed ? '&#9888; Claims failed verification'
+                        : none ? '&#9888; Nothing to verify'
+                               : '&#10003; Every claim verified against the live source';
+            box.innerHTML = `<strong>${label}</strong><br>`
+                + `${ver.verified ?? 0} of ${ver.total_claims ?? 0} claims traced to captured page elements`
+                + (ver.pass_rate ? ` &middot; ${ver.pass_rate}` : '');
+            frameWrap.parentNode.insertBefore(box, frameWrap);
+        }
+
+        actions.innerHTML = '';
+        if (r.demo && r.demo.artifact_path) {
+            const a = document.createElement('a');
+            a.className = 'dc-link';
+            a.target = '_blank'; a.rel = 'noopener';
+            a.href = `${API}/artifacts/${r.demo.artifact_path}`;
+            a.textContent = 'Open demo full screen →';
+            actions.appendChild(a);
+        }
+        if (r.demo && r.demo.generated_by === 'fallback-engine') {
+            const note = document.createElement('span');
+            note.className = 'dc-shot-cap';
+            note.textContent = 'Built by the offline engine — set GEMINI_API_KEY for AI-authored demos.';
+            actions.appendChild(note);
+        }
+    }
+
+    function stopPolling() {
+        if (polling) { clearInterval(polling); polling = null; }
+    }
+
+    function finish(label, state) {
+        stopPolling();
+        submit.disabled = false;
+        submit.textContent = 'Create Demo →';
+        setStatus(label, state);
+    }
+
+    function poll(id) {
+        let misses = 0;
+        polling = setInterval(async () => {
+            try {
+                const res = await fetch(`${API}/workflows/${id}`);
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                const data = await res.json();
+                misses = 0;
+
+                renderSteps(data.progress || {});
+                if (data.progress && data.progress.error) showError(data.progress.error);
+
+                if (data.status === 'COMPLETED') {
+                    renderResult(data);
+                    finish('Done — your demo is ready.', '');
+                } else if (data.status === 'FAILED') {
+                    showError((data.progress && data.progress.error) || 'The workflow failed.');
+                    finish('That run failed. See the details above.', 'error');
+                }
+            } catch (e) {
+                // Tolerate brief blips; give up only if the engine stays unreachable.
+                if (++misses >= 5) {
+                    showError('Lost contact with the demo engine: ' + e.message);
+                    finish('Connection lost.', 'error');
+                }
+            }
+        }, 2500);
+    }
+
+    form.addEventListener('submit', async ev => {
+        ev.preventDefault();
+        if (!engineUp) { await checkEngine(); if (!engineUp) return; }
+
+        const url = urlIn.value.trim();
+        if (!url) return;
+        const prompt = promptIn.value.trim() || 'Walk through the main flow a new user would take.';
+
+        stopPolling();
+        errBox.hidden = true; errBox.textContent = '';
+        result.hidden = true;
+        frameWrap.hidden = true; frame.removeAttribute('src');
+        run.hidden = false;
+        fill.style.width = '0%';
+        stepsWrap.innerHTML = '';
+        submit.disabled = true;
+        submit.textContent = 'Working…';
+        setStatus('Submitting…', '');
+
+        try {
+            const res = await fetch(API + '/workflows', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    goal: `Generate a demo of ${url}. ${prompt}`,
+                    target_url: url,
+                    user_id: 'landing_page'
+                })
+            });
+            if (!res.ok) throw new Error('HTTP ' + res.status + ' ' + (await res.text()).slice(0, 200));
+            const { workflow_id } = await res.json();
+            setStatus('Exploring your product — this takes a minute or two.', '');
+            poll(workflow_id);
+        } catch (e) {
+            showError('Could not start the run: ' + e.message);
+            finish('Could not reach the demo engine.', 'error');
+        }
+    });
+
+    checkEngine();
+})();
+
+// ===== Scroll reveal for problem cards =====
+(() => {
+    const cards = document.querySelectorAll('.problem-card');
+    const reveal = (el) => el.classList.add('animate-visible');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => { if (entry.isIntersecting) reveal(entry.target); });
+    }, { threshold: 0.15 });
+    cards.forEach(el => {
+        el.classList.add('animate-on-scroll');
+        observer.observe(el);
+    });
+    // Fallback poll in case IntersectionObserver never fires (non-composited tab, etc.)
+    const revealPoll = setInterval(() => {
+        let allRevealed = true;
+        cards.forEach(el => {
+            const rect = el.getBoundingClientRect();
+            if (rect.top < window.innerHeight && rect.bottom > 0) reveal(el);
+            else allRevealed = false;
+        });
+        if (allRevealed) clearInterval(revealPoll);
+    }, 400);
+})();
+</script>
+</body>
+</html>

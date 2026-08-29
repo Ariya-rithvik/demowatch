@@ -1,0 +1,53 @@
+# Zerops project definition.
+#
+# Four services. The split is functional, not decorative:
+#   db      - workflow/task state has to outlive container restarts
+#   storage - generated media is large and binary; container disks are ephemeral
+#   api     - the pipeline: drives Chromium, renders video, runs the agents
+#   web     - static UI, served independently so it stays up while the API redeploys
+#
+# Import with:  zcli project project-import zerops-project-import.yml
+
+project:
+  name: veridemo
+  description: Demo videos where every spoken claim traces back to the live product
+  corePackage: SERIOUS   # the API needs real memory for Chromium + FFmpeg
+  tags:
+    - veridemo
+
+services:
+  # ── PostgreSQL ─────────────────────────────────────────────────────────────
+  # Workflow and task rows. Priority 1 so it exists before the API boots and runs
+  # its schema migration.
+  - hostname: db
+    type: postgresql@16
+    mode: NON_HA
+    priority: 3
+
+  # ── Object storage (S3-compatible) ─────────────────────────────────────────
+  # Rendered MP4s, screenshots, truth sets and verification reports. Without this
+  # every redeploy would lose previously generated packages.
+  - hostname: storage
+    type: object-storage
+    objectStorageSize: 10
+    priority: 3
+
+  # ── API / pipeline ─────────────────────────────────────────────────────────
+  # Not publicly exposed on its own; the web service proxies to it. Chromium and
+  # FFmpeg are installed at build time - see zerops.yml.
+  - hostname: api
+    type: python@3.11
+    mode: NON_HA
+    enableSubdomainAccess: true
+    minContainers: 1
+    priority: 2
+    envSecrets:
+      # Optional. Narration falls back to Edge TTS and scene text is generated
+      # deterministically when this is unset, so the pipeline still works.
+      GEMINI_API_KEY: ""
+
+  # ── Web / static UI ────────────────────────────────────────────────────────
+  - hostname: web
+    type: static
+    enableSubdomainAccess: true
+    priority: 1

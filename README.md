@@ -137,15 +137,28 @@ before anything is published. The read-only tools are annotated as such, so they
 ```bash
 npx @truefoundry/trueforge@latest        # needs Node >= 22; on Windows use WSL or Docker
 python harness/veridemo_mcp.py           # serves MCP on :9077
+python harness/setup_trueforge.py        # registers the MCP server and the agent
 ```
 
-Then in TrueForge: connect a model (Google Gemini is a first-class provider), and register
-the MCP server — `http://127.0.0.1:9077/mcp`, or the Windows host IP if TrueForge is in
-WSL. For the sandbox, either configure Daytona or install the local sandbox's host
-dependencies:
+`setup_trueforge.py` is idempotent and verifies its own work: it registers the server,
+asks TrueForge to list the tools back (which is what proves the harness can actually
+reach it), registers the agent from `harness/trueforge/agent.json`, and then reports
+what still needs credentials rather than claiming it is done.
+
+Two things it cannot do for you, because neither belongs in a repo:
+
+- **A model.** Add a Google Gemini API key in the TrueForge UI. `google-gemini` is a
+  first-class provider, so the agent talks to Gemini directly.
+- **A sandbox.** Either configure Daytona, or install the local sandbox's host
+  dependencies: `sudo apt-get install -y bubblewrap socat ripgrep`
+
+**On Windows**, run the harness under WSL or Docker. TrueForge 0.1.4 does not start on
+Windows directly (the ESM loader rejects `c:` paths) and its local sandbox is Linux and
+macOS only. When TrueForge runs in WSL and the MCP server runs on Windows, `localhost`
+inside WSL is WSL, so point it at the Windows host:
 
 ```bash
-sudo apt-get install -y bubblewrap socat ripgrep
+export VERIDEMO_MCP_URL="http://$(ip route show default | awk '{print $3}'):9077/mcp"
 ```
 
 ### Crawling safely

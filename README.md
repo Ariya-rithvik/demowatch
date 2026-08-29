@@ -102,6 +102,75 @@ With no `DATABASE_URL` it uses SQLite; with no S3 vars it writes to local disk. 
 key is required** — narration is Edge TTS and compositing is FFmpeg, so the pipeline
 produces a complete verified video out of the box.
 
+## The agent on TrueForge
+
+The pipeline above runs a fixed sequence, which makes it a script rather than an agent:
+nothing decides anything at runtime. `harness/veridemo_mcp.py` exposes the same
+capabilities as MCP tools an agent composes itself, so the harness does the reasoning.
+
+| Tool | Annotation | What it does |
+|---|---|---|
+| `crawl_product` | read-only | Drives real Chromium and captures the facts a page states |
+| `list_facts` | read-only | The facts the agent is allowed to cite |
+| `check_narration` | read-only | **The guard** — accepts or rejects one proposed line |
+| `review_script` | read-only | The lines accepted so far |
+| `publish_demo` | **destructive** | The irreversible step; the harness holds it for approval |
+
+**The loop is the point.** The agent writes a line, cites facts, and calls
+`check_narration`. A line that states a number the source never mentions comes back
+rejected with that number named, and has to be rewritten before it can ship. There is no
+path from "the model said it" to "the demo says it" that skips the check — so the failure
+case is the interesting one:
+
+```
+check_narration("It costs $4999 per seat.", ["f_4e1b531b…"])
+  → accepted: false
+    unsupported_numbers: ["4999"]
+    reason: "numbers not found in source: 4999"
+```
+
+Because `publish_demo` carries MCP's `destructiveHint`, TrueForge stops and asks a person
+before anything is published. The read-only tools are annotated as such, so they don't.
+
+### Run it
+
+```bash
+npx @truefoundry/trueforge@latest        # needs Node >= 22; on Windows use WSL or Docker
+python harness/veridemo_mcp.py           # serves MCP on :9077
+```
+
+Then in TrueForge: connect a model (Google Gemini is a first-class provider), and register
+the MCP server — `http://127.0.0.1:9077/mcp`, or the Windows host IP if TrueForge is in
+WSL. For the sandbox, either configure Daytona or install the local sandbox's host
+dependencies:
+
+```bash
+sudo apt-get install -y bubblewrap socat ripgrep
+```
+
+### Crawling safely
+
+The stock explorer planner types `"Test Input"` into any text field it finds and clicks
+whatever it can reach. That is how multi-step flows get discovered on a page you own, and
+it is submitting forms you do not own anywhere else. `crawl_product` is therefore
+**observation-only unless `interact=true` is passed explicitly**.
+
+Capping actions at zero does not achieve this: extraction and action share one loop, so a
+zero cap skips reading the page too. The read-only mode instead lets the crawl read the
+page and gives the planner nothing to do, which is the loop's own stop condition — a full
+extraction with provably zero interaction.
+
+## Qodo Code Review Evidence
+
+<!-- Replace the placeholder below with the real merged PR before submitting. -->
+
+Representative merged pull request: **_[link pending — see `feat/trueforge-mcp-harness`]_**
+
+What Qodo surfaced and what changed as a result: **_[fill in after the review runs]_**
+
+The pull request history on that branch shows the completed review, the decisions taken on
+each finding, and a follow-up review against the final code.
+
 ## API
 
 | Route | Purpose |

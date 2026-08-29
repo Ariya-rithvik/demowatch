@@ -92,8 +92,15 @@ def _enforce_read_only(agent: Any) -> None:
     agent.planner.plan_next_action = refuse
 
 
-def _run_crawl(target_url: str, out_dir: Path, interact: bool) -> Dict[str, Any]:
+async def _run_crawl(target_url: str, out_dir: Path, interact: bool) -> Dict[str, Any]:
     """Drive the real browser.
+
+    This is async and awaits the crawl directly. It must not call `asyncio.run`: the
+    orchestrator gets away with that because its agents run on worker threads with no
+    event loop, but FastMCP invokes tool functions on the running loop, where
+    `asyncio.run` raises and the crawl coroutine is dropped un-awaited. That failure
+    is invisible to a direct unit test, which has no loop running - it only appears
+    over the actual MCP transport.
 
     `interact` is off by default and that default matters: interaction means clicking
     and typing on the far end, which is fine on a page you own and not fine anywhere
@@ -118,10 +125,19 @@ def _run_crawl(target_url: str, out_dir: Path, interact: bool) -> Dict[str, Any]
         save_screenshots=True,
     )
 
+    # ExplorerConfig is a pydantic BaseSettings reading ADIP_EXPLORER_* and .env, so
+    # credentials can arrive without any caller passing them - and the explorer logs
+    # into whatever page it is pointed at *before* the planner is consulted, typing
+    # them into the first text and password fields it finds. On an arbitrary URL that
+    # posts your credentials to a stranger. Nothing here needs authentication, so it
+    # is cleared explicitly rather than left to whatever the environment holds.
+    config.username = None
+    config.password = None
+
     agent = _RealExplorer(config)
     if not interact:
         _enforce_read_only(agent)
-    asyncio.run(agent.explore(target_url))
+    await agent.explore(target_url)
 
     published = out_dir / "ExplorationResult.json"
     if not published.is_file():
@@ -143,11 +159,17 @@ def _run_crawl(target_url: str, out_dir: Path, interact: bool) -> Dict[str, Any]
 @mcp.tool(
     annotations=ToolAnnotations(
         title="Crawl a product page",
-        readOnlyHint=True,
+        # Not read-only unconditionally: `interact` lets the crawler click and type on
+        # the target. readOnlyHint is what a host uses to auto-run a tool without
+        # asking, so claiming it here would hand the agent a state-changing capability
+        # pre-labelled safe. The honest annotation for a tool with that mode is
+        # destructive, and the harness can then gate it.
+        readOnlyHint=False,
+        destructiveHint=True,
         openWorldHint=True,
     )
 )
-def crawl_product(url: str, session_id: str = "default", interact: bool = False) -> str:
+async def crawl_product(url: str, session_id: str = "default", interact: bool = False) -> str:
     """Open a product in a real browser and capture the facts it states.
 
     Returns a summary of what was captured, including how many checkable facts are now
@@ -162,11 +184,23 @@ def crawl_product(url: str, session_id: str = "default", interact: bool = False)
         return _err(f"'{url}' is not a usable URL", hint="pass a full http(s) URL")
 
     sid = session_id or "default"
-    out_dir = workflow_dir(f"mcp-{sid}", "exploration")
     try:
-        crawl = _run_crawl(target, out_dir, interact)
+        out_dir = workflow_dir(f"mcp-{sid}", "exploration")
+        crawl = await _run_crawl(target, out_dir, interact)
     except Exception as exc:
+        # workflow_dir is inside the try because a session id of bare dots produces a
+        # path the OS rejects, and an uncaught exception here would escape a tool that
+        # otherwise always answers with structured errors.
         return _err(f"crawl failed: {type(exc).__name__}: {exc}", url=target)
+
+    # The crawl reports how many actions it executed. In read-only mode that must be
+    # zero, and asserting it beats trusting the planner override stayed in place.
+    executed = ((crawl.get("summary") or {}).get("total_actions_executed")) or 0
+    if not interact and executed:
+        return _err(
+            f"read-only crawl executed {executed} action(s); refusing to use this crawl",
+            url=target,
+        )
 
     _SESSIONS[sid] = {
         "target_url": target,
@@ -318,9 +352,21 @@ def publish_demo(session_id: str = "default", title: str = "") -> str:
         return _err("nothing has passed verification, so there is nothing to publish",
                     hint="propose narration through check_narration first")
 
+    # The title ships in the package and is usually its most prominent line, so it is
+    # a claim like any other. Free text here was a hole straight through the guard:
+    # the narration was checked and the title was not. Only the crawled entity name
+    # is allowed, and an agent-supplied title has to match it.
+    entity = (sess.get("entity") or "Product demo").strip()
+    requested = (title or "").strip()
+    if requested and requested.lower() not in entity.lower():
+        return _err(
+            "title must come from the crawled page, not from the agent",
+            requested=requested, allowed=entity,
+        )
+
     out_dir = workflow_dir(f"mcp-{session_id or 'default'}", "demo")
     package = {
-        "title": title or sess.get("entity") or "Product demo",
+        "title": requested or entity,
         "target_url": sess.get("target_url"),
         "crawl_mode": "interactive" if sess.get("interacted") else "read-only",
         "facts_available": len(sess.get("facts") or []),

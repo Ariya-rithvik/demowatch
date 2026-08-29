@@ -46,14 +46,20 @@ class QAAgent:
 
         docs = context.get("documentation_output") or {}
         for dep in (docs.get("section_deps") or []):
-            text = (dep.get("claim") or dep.get("section") or "").strip()
-            if not text:
-                continue
+            # Only the claim text can be checked. Falling back to the section *title*
+            # used to look like verification and was the opposite of it: a title has
+            # no numbers, and verify_claim passes anything numberless that cites
+            # something, so "Pages" was certified against a price fact. A section that
+            # cites sources but records no claim text is unverifiable, and unverifiable
+            # has to fail rather than quietly pass.
+            text = (dep.get("claim") or "").strip()
+            cited = list(dep.get("fact_ids") or [])
             claims.append({
                 "source": "documentation",
                 "ref": f"guide.md#{dep.get('section', '')}",
                 "text": text,
-                "cited_ids": list(dep.get("fact_ids") or []),
+                "cited_ids": cited,
+                "unverifiable": not text,
             })
 
         return claims
@@ -87,7 +93,7 @@ class QAAgent:
 
         claims = self._collect_claims(context)
         checks: List[Dict[str, Any]] = []
-        verified = failed = uncited = dangling = 0
+        verified = failed = uncited = dangling = unverifiable_count = 0
 
         for claim in claims:
             cited_ids = claim["cited_ids"]
@@ -99,9 +105,14 @@ class QAAgent:
             # A citation pointing at a fact that no longer exists is its own failure:
             # it means the artifact references something the source no longer says.
             is_dangling = bool(missing_ids)
-            passed = result["verified"] and not is_dangling
+            unverifiable = bool(claim.get("unverifiable"))
+            passed = result["verified"] and not is_dangling and not unverifiable
 
-            if not cited_ids:
+            if unverifiable:
+                unverifiable_count += 1
+                severity = "high"
+                reason = "section cites sources but records no claim text to check"
+            elif not cited_ids:
                 uncited += 1
                 severity = "high"
                 reason = "claim cites no source facts"
@@ -139,16 +150,29 @@ class QAAgent:
         struct_failed = sum(1 for c in structural if not c["passed"])
 
         total_claims = len(claims)
-        if total_claims == 0:
-            # Nothing asserted anything, so there is no pass rate to report. Saying
-            # "100%" here would be exactly the fabrication this agent exists to prevent.
+        # Structural checks are checks. Leaving them out of the pass rate produced the
+        # contradiction "FAILED ... 0 failed ... 100.0%", and callers that surface only
+        # status and pass_rate showed a clean 100% over real, detected failures.
+        total_checks = total_claims + len(structural)
+        total_passed = verified + (len(structural) - struct_failed)
+
+        if total_claims == 0 and not structural:
+            # Nothing asserted anything and nothing was checked, so there is no pass
+            # rate. Saying "100%" would be the fabrication this agent exists to prevent.
             status = "NO_CLAIMS"
             pass_rate = None
             verifiable = False
+        elif total_claims == 0:
+            # No claims, but structural checks ran and can fail. NO_CLAIMS used to be
+            # returned unconditionally here, which reported missing screenshots as a
+            # non-failing status.
+            verifiable = False
+            status = "FAILED" if struct_failed else "NO_CLAIMS"
+            pass_rate = f"{(total_passed / total_checks) * 100:.1f}%"
         else:
             verifiable = True
             status = "PASSED" if (failed == 0 and struct_failed == 0) else "FAILED"
-            pass_rate = f"{(verified / total_claims) * 100:.1f}%"
+            pass_rate = f"{(total_passed / total_checks) * 100:.1f}%"
 
         output: Dict[str, Any] = {
             "status": status,
@@ -159,10 +183,14 @@ class QAAgent:
             "failed": failed,
             "uncited": uncited,
             "dangling_citations": dangling,
+            "unverifiable_sections": unverifiable_count,
             "structural_checks": len(structural),
             "structural_failures": struct_failed,
+            "total_checks": total_checks,
             "pass_rate": pass_rate,
-            "checks": checks,
+            # Failing checks first, so a caller that truncates the list cannot slice
+            # away the only evidence that something is wrong.
+            "checks": sorted(checks, key=lambda c: bool(c.get("passed"))),
         }
 
         out_dir = workflow_dir(workflow_id, "qa")

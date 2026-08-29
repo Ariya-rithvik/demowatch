@@ -54,7 +54,12 @@ def fact_id(url: str, selector: str) -> str:
 def classify(tag: str, text: str, element_type: str = "") -> str:
     """Best-effort kind, used for prioritisation and nicer UI labels."""
     tag = (tag or "").lower()
-    if _CURRENCY.search(text):
+    # A currency glyph somewhere in a sentence does not make that sentence a price.
+    # Checking it before the tag checks labelled the headline "Announces $1B In-Kind
+    # Donation" as kind=price, and the documentation agent then published it under
+    # "Pricing shown on the site". A price is a short string that is mostly the amount,
+    # so headings keep their tag and only terse currency text is treated as pricing.
+    if _CURRENCY.search(text) and tag not in _HEADING_TAGS and len(text) <= 40:
         return "price"
     if tag in _HEADING_TAGS:
         return "heading"
@@ -228,14 +233,22 @@ def verify_claim(claim_text: str, cited: Iterable[Dict[str, Any]]) -> Dict[str, 
     source_nums = set(re.findall(r'\d+(?:[.,]\d+)?', haystack))
     unsupported = sorted(claim_nums - source_nums)
 
+    # Say what was actually checked. A claim with no digits has nothing this function
+    # can compare, so reporting "all cited facts match source" for it was a false
+    # statement about work that never happened - and 86% of real claims take that
+    # path. The verdict is unchanged (numeric support is the only guarantee offered);
+    # what changes is that callers can now tell a checked claim from an unchecked one.
+    numeric = bool(claim_nums)
     return {
         "claim": claim_text,
         "cited_ids": [f.get("id") for f in cited],
         "verified": not unsupported and bool(cited),
+        "numeric_check": numeric,
         "unsupported_numbers": unsupported,
         "reason": (
             "no facts cited" if not cited
             else f"numbers not found in source: {', '.join(unsupported)}" if unsupported
-            else "all cited facts match source"
+            else "every number in this claim appears in the cited facts" if numeric
+            else "claim states no numbers, so only its citation was checked"
         ),
     }

@@ -1,0 +1,542 @@
+[
+  {
+    "id": "f_f0573004091ba27e",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div > div > div:nth-of-type(3) > div > div:nth-of-type(2) > div > div > div > p",
+    "tag": "p",
+    "kind": "price",
+    "text": "Starts at ₹149. Cancel at any time.",
+    "sha256": "d2e054951fc5f1b014af47be6526442a33067c4d1d7ac0af5ad42e9c0cedaccb"
+  },
+  {
+    "id": "f_6b37178381b222c1",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div > div > div:nth-of-type(3) > div > div:nth-of-type(2) > div > div > div > h1",
+    "tag": "h1",
+    "kind": "heading",
+    "text": "Unlimited movies, shows, and more",
+    "sha256": "bc8f149dd1211ff26306c0b426a804352eda04e374b5168c8bc022baabf9794e"
+  },
+  {
+    "id": "f_4137f5d4dbb93ef5",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div > div > div:nth-of-type(3) > div > div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div > form > h3",
+    "tag": "h3",
+    "kind": "heading",
+    "text": "Ready to watch? Enter your email to create or restart your membership.",
+    "sha256": "28bec51b85090dfec9c214cf5239e3cc8b28cd2ca5a220346f96abb151c4d9b8"
+  },
+  {
+    "id": "f_90484eee0f8ccc78",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div:nth-of-type(2) > div > div > div > h2",
+    "tag": "h2",
+    "kind": "heading",
+    "text": "Trending Now",
+    "sha256": "e857e99e205e76a5721cbc351bd3e18290523ece2b9ced7cba73487e7458b0a7"
+  },
+  {
+    "id": "f_e1e07c97fa0e6922",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div:nth-of-type(2) > div > div:nth-of-type(3) > div > div > div > h2",
+    "tag": "h2",
+    "kind": "heading",
+    "text": "Frequently Asked Questions",
+    "sha256": "a3d458e1bd1eda066018d8db2dd5537c9e742f02f68401457c01553e77f57403"
+  },
+  {
+    "id": "f_69c2ae4354cffb3e",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div:nth-of-type(2) > div > div:nth-of-type(4) > div > div > form > h3",
+    "tag": "h3",
+    "kind": "heading",
+    "text": "Ready to watch? Enter your email to create or restart your membership.",
+    "sha256": "28bec51b85090dfec9c214cf5239e3cc8b28cd2ca5a220346f96abb151c4d9b8"
+  },
+  {
+    "id": "f_b6c750e1a3ca4397",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#nmhp-full-value-props > div > h2",
+    "tag": "h2",
+    "kind": "heading",
+    "text": "More reasons to join",
+    "sha256": "11ab214691710e7a899eed58d868fb226f0ac9bdc0ded1bbb0fd166b9ab6a2e6"
+  },
+  {
+    "id": "f_46b583afe1676b18",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#nmhp-full-value-props > div:nth-of-type(2) > div > div > div > div > div > div > div > h3",
+    "tag": "h3",
+    "kind": "heading",
+    "text": "Enjoy on your TV",
+    "sha256": "52ecebebea015d32a95d5be40c86170eb52269c63162b7bf2e1624799a7d5620"
+  },
+  {
+    "id": "f_6360393bef72dc0d",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#nmhp-full-value-props > div:nth-of-type(2) > div > div:nth-of-type(2) > div > div > div > div > div > h3",
+    "tag": "h3",
+    "kind": "heading",
+    "text": "Download your shows to watch offline",
+    "sha256": "d9a854d54c9ef1c15c5dceddb1d7816def4d9e5c285fb56bbf3b122e1df1ca80"
+  },
+  {
+    "id": "f_0da4fc35627c738a",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#nmhp-full-value-props > div:nth-of-type(2) > div > div:nth-of-type(3) > div > div > div > div > div > h3",
+    "tag": "h3",
+    "kind": "heading",
+    "text": "Watch everywhere",
+    "sha256": "30cbac4ac60268f387c63e003bf31c093410fb57c4ad3acf9b850814a9631bac"
+  },
+  {
+    "id": "f_2e2283aa4928dacc",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#nmhp-full-value-props > div:nth-of-type(2) > div > div:nth-of-type(4) > div > div > div > div > div > h3",
+    "tag": "h3",
+    "kind": "heading",
+    "text": "Create profiles for kids",
+    "sha256": "92e69adf2afcc24e29e6fd8ebd428ab2c7487b70cfb53e22bc1f4b3ae46b0e10"
+  },
+  {
+    "id": "f_57ed9f845ae86f67",
+    "url": "https://www.netflix.com/in",
+    "selector": "#button--nmhp-faq-accordion--0",
+    "tag": "button",
+    "kind": "cta",
+    "text": "What is Netflix?",
+    "sha256": "50c2ab2702f8b6c8b0f1de05a78524425342d2b4555b3cf15b894234a9dd1feb"
+  },
+  {
+    "id": "f_5cf58f189fe9be59",
+    "url": "https://www.netflix.com/in",
+    "selector": "#button--nmhp-faq-accordion--1",
+    "tag": "button",
+    "kind": "cta",
+    "text": "How much does Netflix cost?",
+    "sha256": "3364cf4b44d7009c9e090e1c47151e229c57b3519835dc309449a292a276d6d9"
+  },
+  {
+    "id": "f_2cb8b3c6c899564a",
+    "url": "https://www.netflix.com/in",
+    "selector": "#button--nmhp-faq-accordion--2",
+    "tag": "button",
+    "kind": "cta",
+    "text": "Where can I watch?",
+    "sha256": "49e092f94ab3e0419056047ebb553c3f697ae2e490dfff59b5ccff1cd2c3a6ff"
+  },
+  {
+    "id": "f_fb93c1613636deb9",
+    "url": "https://www.netflix.com/in",
+    "selector": "#button--nmhp-faq-accordion--3",
+    "tag": "button",
+    "kind": "cta",
+    "text": "How do I cancel?",
+    "sha256": "01a7bb42925ff41aaef8524f61f7ace37622ebc3d3dfac22f20838f84faa4e26"
+  },
+  {
+    "id": "f_63a9b846b7502045",
+    "url": "https://www.netflix.com/in",
+    "selector": "#button--nmhp-faq-accordion--4",
+    "tag": "button",
+    "kind": "cta",
+    "text": "What can I watch on Netflix?",
+    "sha256": "babbc9dde240e61f2b8d1b74f3cc39bd82c6d7535bc60ae1dcdf16504983244d"
+  },
+  {
+    "id": "f_56dad4350cfd7ff2",
+    "url": "https://www.netflix.com/in",
+    "selector": "#button--nmhp-faq-accordion--5",
+    "tag": "button",
+    "kind": "cta",
+    "text": "Is Netflix good for kids?",
+    "sha256": "3fa38113ca1a6f5a5cd3cc71d50770b9819a085e701bc0989ec79f9bd7a0b403"
+  },
+  {
+    "id": "f_b097eb963208e3bf",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div > div > div:nth-of-type(2) > div > div > header > div:nth-of-type(2) > div > div > div:nth-of-type(2) > a",
+    "tag": "a",
+    "kind": "cta",
+    "text": "Sign In",
+    "sha256": "bcc0bcc9140b0c97a6440ce56966a07a05e85bddd509ddc5e2ab98755f319af1"
+  },
+  {
+    "id": "f_17d6209602a92573",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div > div > div:nth-of-type(3) > div > div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div > form > div > button",
+    "tag": "button",
+    "kind": "cta",
+    "text": "Get Started",
+    "sha256": "983f311018642b0ae60c71253b5735579906d43d260ea926ebe5e815b1c97abb"
+  },
+  {
+    "id": "f_360d6bac9b3f972d",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div:nth-of-type(2) > ul > li > button",
+    "tag": "button",
+    "kind": "cta",
+    "text": "Alpha 1 1",
+    "sha256": "6033fda0ded2e3601ef844766719dc380549b94f623c5b0139888bbe1b77ac4a"
+  },
+  {
+    "id": "f_20c75353ca2b4d5f",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div:nth-of-type(2) > ul > li:nth-of-type(10) > button",
+    "tag": "button",
+    "kind": "cta",
+    "text": "Bhooth Bangla 10 10",
+    "sha256": "1d04606273a405919c87f437c682b19ef46547fbba831a4d6bf69c66a64fc935"
+  },
+  {
+    "id": "f_8fe0fd92d8461eff",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div:nth-of-type(2) > ul > li:nth-of-type(3) > button",
+    "tag": "button",
+    "kind": "cta",
+    "text": "Musafir Cafe 3 3",
+    "sha256": "989865cc7dad3d18403adc37043c0e7895f3f6ecf8440b90754633ff9fb5613c"
+  },
+  {
+    "id": "f_218cffaa0d49ce7d",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div:nth-of-type(2) > ul > li:nth-of-type(4) > button",
+    "tag": "button",
+    "kind": "cta",
+    "text": "The Whisper Man 4 4",
+    "sha256": "edc23727cc7393ac9cf44e1d1eb7bf078f21fa09a501290372983ae9d95aad11"
+  },
+  {
+    "id": "f_9875172e9a2439b0",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div:nth-of-type(2) > ul > li:nth-of-type(5) > button",
+    "tag": "button",
+    "kind": "cta",
+    "text": "Cocktail 2 5 5",
+    "sha256": "0de148261d3dad0d9ac52ed430e3296d420d54fb20b271bef10190e6eac76297"
+  },
+  {
+    "id": "f_bae575c52863d7ca",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div:nth-of-type(2) > ul > li:nth-of-type(6) > button",
+    "tag": "button",
+    "kind": "cta",
+    "text": "Gatta Kusthi 2 6 6",
+    "sha256": "3914aca57f5c6215eef89f389895c0a9f73dbc448eb7e7ce6d9d505f81c8c5ee"
+  },
+  {
+    "id": "f_4969513b1a7f6d5b",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div:nth-of-type(2) > ul > li:nth-of-type(7) > button",
+    "tag": "button",
+    "kind": "cta",
+    "text": "Peddi 7 7",
+    "sha256": "067d3026117571d4c0bb05b84279188ad5c41617228a6761d23982d0ca998acc"
+  },
+  {
+    "id": "f_ea60853b6c335e1f",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div:nth-of-type(2) > ul > li:nth-of-type(8) > button",
+    "tag": "button",
+    "kind": "cta",
+    "text": "Mousetrap 8 8",
+    "sha256": "c248c0dca30bada1ebb16a7e651ea6aee3509d3e06a1083f5be51b52c284a5aa"
+  },
+  {
+    "id": "f_c3ed26daa6cb4936",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div:nth-of-type(2) > ul > li:nth-of-type(9) > button",
+    "tag": "button",
+    "kind": "cta",
+    "text": "Lock Upp 9 9",
+    "sha256": "90ef4cc45a63e586f34ec76394154b40063471493d0f51a73893291fa13764cc"
+  },
+  {
+    "id": "f_dc138b336dbdf587",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div:nth-of-type(2) > div > div:nth-of-type(4) > div > div > form > div > button",
+    "tag": "button",
+    "kind": "cta",
+    "text": "Get Started",
+    "sha256": "983f311018642b0ae60c71253b5735579906d43d260ea926ebe5e815b1c97abb"
+  },
+  {
+    "id": "f_144de04f78fb8590",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div:nth-of-type(2) > div > div:nth-of-type(5) > div > footer > div > p > span > a",
+    "tag": "a",
+    "kind": "cta",
+    "text": "000-800-919-1743",
+    "sha256": "c4ed2a337cd2d6239fd896287edc697d9d5643f878c6b0708499fb32acfe158d"
+  },
+  {
+    "id": "f_dfedc14f5fce86b5",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div:nth-of-type(2) > div > div:nth-of-type(5) > div > footer > div:nth-of-type(2) > div > ul > li > a",
+    "tag": "a",
+    "kind": "cta",
+    "text": "FAQ",
+    "sha256": "dbc468a14b601d5d9240aeb72b9fcd2f8aed2f4e30932876edf8d16ec313846b"
+  },
+  {
+    "id": "f_d90bcf42f1759969",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div:nth-of-type(2) > div > div:nth-of-type(5) > div > footer > div:nth-of-type(2) > div > ul > li:nth-of-type(10) > a",
+    "tag": "a",
+    "kind": "cta",
+    "text": "Cookie Preferences",
+    "sha256": "9d66145994897c50fa73cdd1e97bc87eeb9870375bf2b4ce083e9d5717f1ccfd"
+  },
+  {
+    "id": "f_bc39dc847059ded3",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div:nth-of-type(2) > div > div:nth-of-type(5) > div > footer > div:nth-of-type(2) > div > ul > li:nth-of-type(11) > a",
+    "tag": "a",
+    "kind": "cta",
+    "text": "Corporate Information",
+    "sha256": "572f5da06899768f480173e606cee4b563faf7353daca1b6088a2c82e2c5bda1"
+  },
+  {
+    "id": "f_72c64a6f5cfbe14e",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div:nth-of-type(2) > div > div:nth-of-type(5) > div > footer > div:nth-of-type(2) > div > ul > li:nth-of-type(12) > a",
+    "tag": "a",
+    "kind": "cta",
+    "text": "Contact Us",
+    "sha256": "98b67063cf8e584d75e53b88472ee85473e01e0ea16f29ece9cc98f4a2710494"
+  },
+  {
+    "id": "f_b7d10b505367b299",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div:nth-of-type(2) > div > div:nth-of-type(5) > div > footer > div:nth-of-type(2) > div > ul > li:nth-of-type(13) > a",
+    "tag": "a",
+    "kind": "cta",
+    "text": "Speed Test",
+    "sha256": "d23ced7772a783f36ad03e09eb7eeb3bc2b33309c3fef2a9162e288c75c29396"
+  },
+  {
+    "id": "f_a164f412c6d1ea04",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div:nth-of-type(2) > div > div:nth-of-type(5) > div > footer > div:nth-of-type(2) > div > ul > li:nth-of-type(14) > a",
+    "tag": "a",
+    "kind": "cta",
+    "text": "Legal Notices",
+    "sha256": "eb70bc0f994ea6ea233c7477833ec909fdf5bbdffba7e1f00ba449669b52f322"
+  },
+  {
+    "id": "f_efdc0bc1661d1f1f",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div:nth-of-type(2) > div > div:nth-of-type(5) > div > footer > div:nth-of-type(2) > div > ul > li:nth-of-type(15) > a",
+    "tag": "a",
+    "kind": "cta",
+    "text": "Only on Netflix",
+    "sha256": "ded8859801bd4d88cd8cb871959b2a0f7e7db7774896072a1b5c0628bf34628b"
+  },
+  {
+    "id": "f_650b216be6d7ad62",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div:nth-of-type(2) > div > div:nth-of-type(5) > div > footer > div:nth-of-type(2) > div > ul > li:nth-of-type(2) > a",
+    "tag": "a",
+    "kind": "cta",
+    "text": "Help Centre",
+    "sha256": "1771af9d4cc49b52e7ed07ee27f6e82c134c792e72932ed844679dc46836e6d5"
+  },
+  {
+    "id": "f_e10d918cc5b96ee9",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div:nth-of-type(2) > div > div:nth-of-type(5) > div > footer > div:nth-of-type(2) > div > ul > li:nth-of-type(3) > a",
+    "tag": "a",
+    "kind": "cta",
+    "text": "Account",
+    "sha256": "7e1b0d5641f2640ce9a953ec231eea2c27a2a7633f7d3c273e5735e2b30c10b7"
+  },
+  {
+    "id": "f_51d4ae5fd3fad183",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div:nth-of-type(2) > div > div:nth-of-type(5) > div > footer > div:nth-of-type(2) > div > ul > li:nth-of-type(4) > a",
+    "tag": "a",
+    "kind": "cta",
+    "text": "Media Centre",
+    "sha256": "04f5ae70a3a259fc3095c07ea6c07f809d905638413e4c78ff247906be2abd3c"
+  },
+  {
+    "id": "f_4456de6d854d8143",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div:nth-of-type(2) > div > div:nth-of-type(5) > div > footer > div:nth-of-type(2) > div > ul > li:nth-of-type(5) > a",
+    "tag": "a",
+    "kind": "cta",
+    "text": "Investor Relations",
+    "sha256": "946b5dc40ef10f277ab86b6a2f082b7126123ea410532c637ee819f6736999d8"
+  },
+  {
+    "id": "f_542c13f8d8912832",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div:nth-of-type(2) > div > div:nth-of-type(5) > div > footer > div:nth-of-type(2) > div > ul > li:nth-of-type(6) > a",
+    "tag": "a",
+    "kind": "cta",
+    "text": "Jobs",
+    "sha256": "2f17a0f8d518e491c5a0c490b2c1991828dd87d173994ba40996e1da59d4e368"
+  },
+  {
+    "id": "f_43c43beeb086d9b7",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div:nth-of-type(2) > div > div:nth-of-type(5) > div > footer > div:nth-of-type(2) > div > ul > li:nth-of-type(7) > a",
+    "tag": "a",
+    "kind": "cta",
+    "text": "Ways to Watch",
+    "sha256": "9bf329d9e085b033d931f0801620f18868773c5c8e9ed302e1cd3101ff9efe12"
+  },
+  {
+    "id": "f_a6c77a41913987dc",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div:nth-of-type(2) > div > div:nth-of-type(5) > div > footer > div:nth-of-type(2) > div > ul > li:nth-of-type(8) > a",
+    "tag": "a",
+    "kind": "cta",
+    "text": "Terms of Use",
+    "sha256": "12a0015fa32217778863154566bce500732726db6ea596518712c12955d9a225"
+  },
+  {
+    "id": "f_5461da33fb507789",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div:nth-of-type(2) > div > div:nth-of-type(5) > div > footer > div:nth-of-type(2) > div > ul > li:nth-of-type(9) > a",
+    "tag": "a",
+    "kind": "cta",
+    "text": "Privacy",
+    "sha256": "54a57c3147c49f33de5898b87084ad2b14c4ab308f762454bf92aca907478ad5"
+  },
+  {
+    "id": "f_cacf77bcfb21c09f",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div:nth-of-type(2) > ul > li > button > span > span > span",
+    "tag": "span",
+    "kind": "number",
+    "text": "1",
+    "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+  },
+  {
+    "id": "f_ddd87b667a137e54",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div:nth-of-type(2) > ul > li > button > span > span > span:nth-of-type(2)",
+    "tag": "span",
+    "kind": "number",
+    "text": "1",
+    "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+  },
+  {
+    "id": "f_28f262e1ed52057a",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div:nth-of-type(2) > ul > li:nth-of-type(10) > button > span > span > span",
+    "tag": "span",
+    "kind": "number",
+    "text": "10",
+    "sha256": "4a44dc15364204a80fe80e9039455cc1608281820fe2b24f1e5233ade6af1dd5"
+  },
+  {
+    "id": "f_3af33f5a6e2da2ab",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div:nth-of-type(2) > ul > li:nth-of-type(10) > button > span > span > span:nth-of-type(2)",
+    "tag": "span",
+    "kind": "number",
+    "text": "10",
+    "sha256": "4a44dc15364204a80fe80e9039455cc1608281820fe2b24f1e5233ade6af1dd5"
+  },
+  {
+    "id": "f_f8d04d4015aaa1e3",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div:nth-of-type(2) > ul > li:nth-of-type(2) > button",
+    "tag": "button",
+    "kind": "number",
+    "text": "Operation Safed Sagar: The Untold Story of the Kargil War 2 2",
+    "sha256": "0e75a044931a3ba01d0372171ef216503e27f6999ee7084b448a7f5354f7f650"
+  },
+  {
+    "id": "f_6051f969095aa7fd",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div:nth-of-type(2) > ul > li:nth-of-type(2) > button > span > span > span",
+    "tag": "span",
+    "kind": "number",
+    "text": "2",
+    "sha256": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35"
+  },
+  {
+    "id": "f_e047f8bcaa10dd29",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div:nth-of-type(2) > ul > li:nth-of-type(2) > button > span > span > span:nth-of-type(2)",
+    "tag": "span",
+    "kind": "number",
+    "text": "2",
+    "sha256": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35"
+  },
+  {
+    "id": "f_4b44cee21b1d20e7",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div:nth-of-type(2) > ul > li:nth-of-type(3) > button > span > span > span",
+    "tag": "span",
+    "kind": "number",
+    "text": "3",
+    "sha256": "4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce"
+  },
+  {
+    "id": "f_f9d6a34c5adb0cb5",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div:nth-of-type(2) > ul > li:nth-of-type(3) > button > span > span > span:nth-of-type(2)",
+    "tag": "span",
+    "kind": "number",
+    "text": "3",
+    "sha256": "4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce"
+  },
+  {
+    "id": "f_9c9ecaf5f5ba636d",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div:nth-of-type(2) > ul > li:nth-of-type(4) > button > span > span > span",
+    "tag": "span",
+    "kind": "number",
+    "text": "4",
+    "sha256": "4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a"
+  },
+  {
+    "id": "f_f8eb92e49d9e2c5a",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div:nth-of-type(2) > ul > li:nth-of-type(4) > button > span > span > span:nth-of-type(2)",
+    "tag": "span",
+    "kind": "number",
+    "text": "4",
+    "sha256": "4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a"
+  },
+  {
+    "id": "f_040d72daf26e2fd8",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div:nth-of-type(2) > ul > li:nth-of-type(5) > button > span > span > span",
+    "tag": "span",
+    "kind": "number",
+    "text": "5",
+    "sha256": "ef2d127de37b942baad06145e54b0c619a1f22327b2ebbcfbec78f5564afe39d"
+  },
+  {
+    "id": "f_c0a58983f588d6f9",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div:nth-of-type(2) > ul > li:nth-of-type(5) > button > span > span > span:nth-of-type(2)",
+    "tag": "span",
+    "kind": "number",
+    "text": "5",
+    "sha256": "ef2d127de37b942baad06145e54b0c619a1f22327b2ebbcfbec78f5564afe39d"
+  },
+  {
+    "id": "f_b029f9327ffcbeab",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div:nth-of-type(2) > ul > li:nth-of-type(6) > button > span > span > span",
+    "tag": "span",
+    "kind": "number",
+    "text": "6",
+    "sha256": "e7f6c011776e8db7cd330b54174fd76f7d0216b612387a5ffcfb81e6f0919683"
+  },
+  {
+    "id": "f_42968d5fa4726053",
+    "url": "https://www.netflix.com/in",
+    "selector": "div#appMountPoint > div > div > div > div > div > div > div:nth-of-type(2) > div > div > div:nth-of-type(2) > div > div:nth-of-type(2) > ul > li:nth-of-type(6) > button > span > span > span:nth-of-type(2)",
+    "tag": "span",
+    "kind": "number",
+    "text": "6",
+    "sha256": "e7f6c011776e8db7cd330b54174fd76f7d0216b612387a5ffcfb81e6f0919683"
+  }
+]

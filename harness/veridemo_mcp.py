@@ -44,6 +44,10 @@ from agents.orchestrator.truth_set import (  # noqa: E402
     index_by_id,
     verify_claim,
 )
+from agents.orchestrator.agent_ingest import ContentIngestAgent  # noqa: E402
+from agents.orchestrator.registry import GeminiClient  # noqa: E402
+
+_ingest_agent = ContentIngestAgent(llm=GeminiClient())
 
 mcp = FastMCP("Veridemo — verified product demos")
 
@@ -324,6 +328,47 @@ def review_script(session_id: str = "default") -> str:
         "target_url": sess.get("target_url"),
         "verified_scenes": len(scenes),
         "script": [{"index": i + 1, **s} for i, s in enumerate(scenes)],
+    }, default=str)
+
+
+# ── Veridemo Watch: audit content someone already wrote ─────────────────────────
+
+@mcp.tool(annotations=ToolAnnotations(title="Audit existing content against a crawl", readOnlyHint=True))
+def audit_content(content: str, session_id: str = "default", auto_accept: bool = True) -> str:
+    """Check a creator's existing script/post/transcript against the crawl's facts.
+
+    Unlike check_narration (one proposed line at a time), this takes a whole piece of
+    already-written content and does the segmentation and fact-matching itself in one
+    pass -- Gemini when VERIDEMO's GEMINI_API_KEY is set, a deterministic keyword/number
+    overlap matcher otherwise. Either way every extracted claim still goes through the
+    same numeric-support guard check_narration uses, so a bad match fails verification
+    instead of shipping.
+
+    With auto_accept (default), verified claims are added to this session's script, same
+    as an accepted check_narration line -- so review_script/publish_demo see them too.
+    """
+    facts = _facts(session_id)
+    if not facts:
+        return _err("no crawl for this session", hint="call crawl_product first")
+    if not (content or "").strip():
+        return _err("empty content")
+
+    result = _ingest_agent.ingest(content, facts)
+
+    if auto_accept:
+        sess = _session(session_id)
+        for c in result["claims"]:
+            if c["verified"]:
+                sess["verified_scenes"].append({"narration": c["text"], "asserts": c["cited_ids"]})
+
+    return json.dumps({
+        "ok": True,
+        "generated_by": result["generated_by"],
+        "total_claims": result["total_claims"],
+        "verified": result["verified"],
+        "failed": result["failed"],
+        "claims": result["claims"],
+        "added_to_script": result["verified"] if auto_accept else 0,
     }, default=str)
 
 

@@ -63,18 +63,32 @@ Implemented and demonstrated in this repo today:
   (`check_narration` in `harness/veridemo_mcp.py` takes any `text` + `fact_ids`)
 - Drift diff between two crawls of the same target, resolved to stale artifacts
   (`agent_release.py`)
+- **Content ingestion** (`api/agents/orchestrator/agent_ingest.py`): given a creator's
+  raw script, it segments it into claims and matches each one to the fact ids it's
+  actually about — Gemini in one pass when `GEMINI_API_KEY` is set (same "one model pass
+  does segmentation and scoring together" principle as the team's Cutlist project), a
+  deterministic keyword/number-overlap matcher otherwise. Either path feeds every claim
+  through the same numeric-support guard, so a bad match fails verification instead of
+  shipping. Exposed as the `audit_content` MCP tool, and runnable standalone:
+
+  ```bash
+  python examples/watch_demo.py
+  ```
+
+  This runs against a **real crawl of netflix.com** (`docs/proof-run/netflix_truth_set.json`,
+  60 facts) with a creator script containing one accurate price claim and one stale one.
+  Output: 2/3 claims verified, the stale ₹499 claim caught and rejected with the reason
+  named — the exact "notify when the price is wrong" behavior, working end to end today.
 
 Pitched, not yet built as a standalone product: the creator-facing notification surface
-(email/webhook on drift) and a content-ingestion step that turns an arbitrary
-script/post into a list of (claim, cited-selector) pairs automatically instead of the
-creator supplying fact ids by hand. Both are thin layers over agents that already exist
-— see [Roadmap](#roadmap).
+(email/webhook on drift) that watches a tracked URL on a schedule and pushes an alert —
+the diffing itself (`agent_release.py`) already exists, this is a thin scheduler +
+delivery layer on top. See [Roadmap](#roadmap).
 
 ## Roadmap
 
-1. Content ingestion: given a script/post/video transcript, use an LLM to extract
-   candidate claims and propose the `css_selector` each one is most likely describing,
-   then run them all through `check_narration` in one batch.
+1. ~~Content ingestion~~ — **done**: `agent_ingest.py` extracts claims from arbitrary
+   text and matches them to fact ids automatically; see above.
 2. Scheduled re-crawl per tracked product URL, diffed via the existing Release agent.
 3. Notification surface: webhook/email the creator when drift is detected, with the
    specific old-vs-new fact and which of their claims it invalidates.

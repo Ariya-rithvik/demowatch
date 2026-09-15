@@ -1,204 +1,170 @@
-# Veridemo — demo videos you can actually verify
+# Veridemo Watch — stop your content from quietly going wrong
 
 **Built for the [AI Builders Hackathon 2026](https://ai-builders-hackathon-2026.devpost.com/).**
 
-Give it a URL. It opens your product in a real browser, walks the flows a user would
-take, and produces a narrated demo video in which **every spoken claim traces back to a
-captured page element** — and any claim it cannot verify is dropped before the video ships.
+You published a review, a tutorial, a walkthrough video. It stated real facts about a
+real product — a price, a feature, a button label. The product changed. Your content
+didn't. Nobody tells you which of your own claims are now wrong, so they just sit there,
+live, quietly eroding trust every time a viewer notices before you do.
+
+Veridemo Watch reads what you already said, checks it against the live product, and
+tells you exactly which claim broke and why — before your audience finds out for you.
+
+> **Sibling project disclosure:** Veridemo Watch shares its verified-fact engine with
+> our companion submission, [**Veridemo**](https://github.com/Ariya-rithvik/demo) (same
+> hackathon, same team). Veridemo *generates* new demo videos from a product URL.
+> Veridemo Watch *audits and maintains* content a creator already published. Different
+> input, different user, different primary workflow — built on one shared verification
+> mechanism. We're disclosing this plainly rather than presenting unrelated projects,
+> because the mechanism itself is the actual innovation and it's honest to say so.
 
 ---
 
 ## The problem
 
-AI-generated product demos hallucinate. They describe features that don't exist and quote
-prices that have changed, and nobody notices until a customer does. Every "AI demo video"
-tool on the market records something and narrates over it — none of them can tell you
-*which specific claim* in a finished video is now false, or prove that a claim was ever
-true in the first place.
+Content creators — course authors, affiliate reviewers, YouTubers doing product
+walkthroughs — publish content that states facts about a live product: prices, feature
+names, button labels, plan limits. The product keeps changing after publication. Nobody
+re-watches their own back catalog to catch what's now wrong. The cost isn't
+hypothetical: viewers act on what they were told, and being visibly wrong in public
+erodes trust fast — a reviewer still quoting a discontinued price, a tutorial pointing
+at a button that got renamed.
 
-Manually recording, editing, and re-recording demos every time a product changes is the
-alternative, and it doesn't scale: sales teams need a demo per segment, onboarding needs
-one per feature release, and every UI change makes the old recording a liability instead
-of an asset.
-
-## The idea: claims are not free — they're citations
-
-Veridemo doesn't let an AI say anything it can't point at. Every scene is bound to the
-DOM elements it asserts:
-
-```json
-{ "index": 2,
-  "kind": "action",
-  "narration": "Select Create Demo.",
-  "asserts": ["f_6ba191cc38a21a37", "f_7f373b67509f32df"] }
-```
-
-A **fact id** is a hash of `url + css_selector` — a stable pointer to one specific claim
-on the page. A **content hash** is a hash of what that element currently says. That split
-is the whole system:
-
-> **Drift = same fact id, different content hash.**
-
-Re-crawl the product later and Veridemo knows exactly which claims went false, which
-video scenes cited them, and which need to be rebuilt. One changed price rebuilds one
-scene — not the whole video.
-
-## Six agents, one pipeline
-
-A central orchestrator (FastAPI, priority queues, SQLite/Postgres-backed job state) runs
-six agents in sequence, each one a real, independently-testable module:
-
-| # | Agent | Does |
-|---|---|---|
-| 1 | **Explorer** | Drives real Chromium via Playwright — clicks, types, screenshots the actual product, and builds a hashed **truth set** of every fact on the page |
-| 2 | **Knowledge graph** | Builds a navigation graph from the crawl's *actual* edges — not a guess at site structure |
-| 3 | **Documentation** | Writes a user guide, recording which facts each section cites |
-| 4 | **Demo** | Turns the recorded user actions into narrated video scenes, zooming into the element each line describes; a scene with no supporting fact is **dropped**, never shipped |
-| 5 | **QA** | Re-checks every claim against the truth set. It genuinely fails — a hallucinated `$129` against a source that says `$99` produces `status: FAILED`, not an inflated pass rate |
-| 6 | **Release** | Diffs against the previous crawl, and resolves exactly which stale facts invalidate which artifacts |
-
-No API key is required to run the core pipeline — narration is Edge TTS and video
-compositing is FFmpeg, so it produces a complete, verified, narrated MP4 out of the box.
-
-## Demo
-
-We pointed the running pipeline at `https://httpbin.org` with no prior data. In one
-unattended pass it:
-
-- Crawled **8 pages**, extracted **356 real DOM elements**, executed **8 real click actions**
-- Built a knowledge graph and a 3-scene narrated demo video with AI voiceover
-- **QA passed 11/11 checks (100%)** — every narrated claim verified against its cited
-  facts, every screenshot confirmed present, zero dangling citations
-
-That full run ships in this repo as evidence:
-
-- [`docs/proof-run/demo.mp4`](docs/proof-run/demo.mp4) — the rendered, narrated video
-- [`docs/proof-run/verification.json`](docs/proof-run/verification.json) — the QA agent's
-  full pass/fail report for every claim
-- [`docs/proof-run/screenshots/`](docs/proof-run/screenshots) — raw crawl screenshots the
-  video scenes were built from
-
-## Architecture
+## How it works
 
 ```
-web (static)  ──HTTP──▶  api (python, FastAPI orchestrator)  ──▶  db (SQLite locally / Postgres in prod)
+your content (script/post/transcript)          live product URL
+              │                                        │
+              └──────────────┐          ┌──────────────┘
+                              ▼          ▼
+                     Ingest agent: segment content into
+                     claims, match each to a crawled fact
+                     (one Gemini pass, or a deterministic
+                     matcher when no API key is set)
                               │
-                              └──────────▶  storage (local disk / S3-compatible object storage)
+                              ▼
+                  Guard: does every number in this claim
+                  appear in the fact(s) it's matched to?
+                              │
+                    ┌─────────┴─────────┐
+                    ▼                   ▼
+                VERIFIED            FLAGGED — here's
+                                     exactly what's
+                                     wrong and why
+
+              (re-crawl later → Release agent diffs
+               the two truth sets → know exactly which
+               claims just went stale)
 ```
 
-- **`db`** — Workflow and task state. The orchestrator re-queues anything left `RUNNING`
-  on restart, so a redeploy resumes in-flight work instead of losing it. `persistence.py`
-  runs on SQLite locally and switches to PostgreSQL when `DATABASE_URL` is set — same code,
-  both environments.
-- **`storage`** — Rendered MP4s, screenshots, truth sets, and verification reports, mirrored
-  to S3-compatible storage where configured so artifacts survive a redeploy.
-- **`api`** — Needs Chromium + FFmpeg in the runtime; a crawl takes 60–90s and a render
-  ~30s, well past any serverless timeout, so this runs as a real long-lived process.
-- **`web`** — Deployed separately so redeploying the pipeline never takes the UI offline.
+1. **Explorer** crawls the live product with real Chromium and builds a hashed **truth
+   set** — one fact id per `url + css_selector`, one content hash per what that element
+   currently says.
+2. **Ingest** takes your existing content — a whole script, not one line at a time — and
+   segments it into individual claims, matching each to the fact ids it's actually about.
+   This is a genuine AI task, not string matching dressed up: with `GEMINI_API_KEY` set,
+   one Gemini pass does the segmentation and fact-matching together (splitting them into
+   two passes doubles latency and the model does worse at each step in isolation — the
+   same principle behind this team's Cutlist project doing transcript segmentation and
+   clip-scoring together). Without a key, a deterministic
+   keyword/number-overlap matcher produces the same shape of output — so the demo below
+   runs with **zero setup and no API key**.
+3. **The guard** re-checks every claim regardless of how it was matched: a claim's
+   numbers must appear in the facts it cites, or it fails, with the offending number
+   named. An LLM that mismatches a claim to the wrong fact produces a claim that fails
+   verification — it can't silently ship a false match.
+4. **Release** stores the truth set and, on a later re-crawl, diffs it against the
+   stored one — *"a changed price rebuilds one scene, not the whole video"* is the
+   literal design goal of this agent (`api/agents/orchestrator/agent_release.py`).
 
-## Run it locally
+## See it work — against a real product, right now
+
+```bash
+pip install -r api/requirements.txt
+python examples/watch_demo.py
+```
+
+No API key needed. This runs against **a real crawl of netflix.com** (60 facts,
+committed in `docs/proof-run/netflix_truth_set.json`) with a creator script containing
+one claim that still matches the live price and one that's gone stale:
+
+```
+Creator's script:
+  Netflix starts at just 149 rupees a month, which is a steal for the content library.
+  You can cancel at any time with no penalty.
+  Honestly Netflix now costs 499 rupees for the basic plan which is way too much.
+
+Engine: deterministic
+2/3 claims verified
+
+[PASS] Netflix starts at just 149 rupees a month, which is a steal for the content library.
+[PASS] You can cancel at any time with no penalty.
+[FAIL] Honestly Netflix now costs 499 rupees for the basic plan which is way too much.
+       -> numbers not found in source: 499
+```
+
+That's the whole product, working end to end, on real data.
+
+## Run the full pipeline locally
 
 ```bash
 pip install -r api/requirements.txt
 python -m playwright install chromium          # FFmpeg must be on PATH
 
 cd api && python -m uvicorn main:app --port 8080     # API
-cd web && python -m http.server 8098                 # UI, then open :8098?api=http://localhost:8080
 ```
 
-Paste any public product URL into the landing page and watch the pipeline run live.
+Then, as an MCP tool an agent can call directly (`harness/veridemo_mcp.py`,
+served on `:9077`):
 
-## Optional: run it as an actual agent, not a script
-
-The pipeline above runs a fixed sequence — nothing decides anything at runtime, which
-makes it a script rather than an agent. `harness/veridemo_mcp.py` exposes the same
-capabilities as MCP tools instead, so an LLM agent composes the pipeline itself:
-
-| Tool | Annotation | What it does |
-|---|---|---|
-| `crawl_product` | read-only | Drives real Chromium and captures the facts a page states |
-| `list_facts` | read-only | The facts the agent is allowed to cite |
-| `check_narration` | read-only | **The guard** — accepts or rejects one proposed line |
-| `review_script` | read-only | The lines accepted so far |
-| `publish_demo` | **destructive** | The irreversible step — held for human approval |
-
-**The loop is the point.** The agent writes a line, cites facts, and calls
-`check_narration`. A line that states a number the source never mentions comes back
-rejected with that number named, and has to be rewritten before it can ship:
-
-```
-check_narration("It costs $4999 per seat.", ["f_4e1b531b…"])
-  → accepted: false
-    unsupported_numbers: ["4999"]
-    reason: "numbers not found in source: 4999"
-```
-
-`publish_demo` carries MCP's `destructiveHint`, so any MCP-compatible agent harness stops
-and asks a person before anything ships. This is exposed via a standard MCP server
-(`python harness/veridemo_mcp.py`, served on `:9077`) and can be wired into Claude,
-TrueForge, or any other MCP-capable agent runtime — see `harness/` for a worked example
-against TrueForge.
-
-### Crawling safely
-
-The stock explorer planner types `"Test Input"` into any text field it finds and clicks
-whatever it can reach — fine on a page you own, not fine anywhere else. `crawl_product`
-is therefore **observation-only unless `interact=true` is passed explicitly**. Capping
-actions at zero doesn't achieve this on its own (extraction and action share one loop),
-so read-only mode instead lets the crawl read the page and gives the planner nothing to
-act on — a full extraction with provably zero interaction.
-
-## API
-
-| Route | Purpose |
+| Tool | What it does |
 |---|---|
-| `GET /health` | Per-service status; 503 when the database is down |
-| `POST /workflows` | `{"goal": "demo of https://example.com"}` |
-| `GET /workflows/{id}` | Live progress + the finished package |
-| `GET /showcase` | Completed packages, read off disk |
-| `GET /artifacts/{path}` | Serves artifacts, refuses paths outside the artifact root |
+| `crawl_product` | Drives real Chromium and captures the facts a page states |
+| `audit_content` | **This product's core tool.** Give it a whole script/post; it segments, matches, and verifies every claim in one call, adding verified ones to the session script |
+| `check_narration` | Verify one proposed line at a time against cited facts |
+| `list_facts` / `review_script` | Inspect what's been captured / accepted |
+| `publish_demo` | Irreversible — held for human approval (MCP `destructiveHint`) |
 
-## Tests
+## What's implemented vs. what's roadmap
 
-Every agent module runs standalone and proves a specific claim about itself:
+**Implemented and demonstrated in this repo:**
+- Live crawl → hashed truth set (`api/agents/orchestrator/truth_set.py`)
+- AI-driven content ingestion — arbitrary text in, verified claims out
+  (`api/agents/orchestrator/agent_ingest.py`)
+- The numeric-support guard, shared with the sibling project's `check_narration`
+- Drift diff between two crawls, resolved to exactly which facts changed
+  (`api/agents/orchestrator/agent_release.py`)
+- `audit_content` MCP tool wiring content ingestion into the agent-composable harness
 
-```bash
-cd api
-python -m agents.orchestrator.agent_qa           # proves QA can genuinely FAIL
-python -m agents.orchestrator.agent_demo         # proves unverifiable scenes are dropped
-python -m agents.orchestrator.agent_release      # proves selective rebuild (2 stale, not 3)
-python -m agents.orchestrator.persistence        # both DB backends
-python -m agents.orchestrator.media_store
-python -m agents.orchestrator.agent_documentation
-python -m agents.orchestrator.agent_knowledge_graph
-python -m agents.orchestrator.video_render
-```
+**Roadmap — thin layers on top of what already exists, not new mechanisms:**
+1. Scheduled re-crawl per tracked product URL, diffed via the existing Release agent.
+2. Notification surface: webhook/email the creator when drift is detected, with the
+   specific old-vs-new fact and which of their claims it invalidates.
+3. Regeneration: for content that was itself AI-narrated (e.g. a Veridemo-made video),
+   automatically rebuild only the affected scene, exactly as the Release agent already
+   resolves for the video pipeline.
 
 ## Honest limitations
 
 - Claim verification checks numeric support and citation integrity, not semantic
   entailment — a non-numeric claim that is merely *implied* can still pass.
-- Screenshots are captured per page, not per action, so an action scene zooms into a page
-  capture rather than showing the true before/after of each click.
-- Crawls are bounded (4 actions / 3 pages by default). Unbounded exploration of a large
-  site took ~188s, too slow for interactive evaluation.
+- The deterministic fallback matcher is keyword/number overlap, not comprehension — it
+  will miss a paraphrased claim a model pass would catch. The verification guard behind
+  it is identical either way, so a wrong match still fails rather than ships.
+- Crawls are bounded (4 actions / 3 pages by default) for interactive-evaluation speed.
 - Authenticated sites are supported by config but untested.
 
-## Impact & roadmap
+## Tests
 
-Today this targets the demo-video use case, but the underlying mechanism — bind every
-generated claim to a hashed source fact, verify before shipping, diff on re-crawl — applies
-anywhere an AI narrates a live product: release notes, sales collateral, support
-documentation, changelogs. The `Release` agent already resolves drift for exactly this
-reason. Next: semantic (not just numeric) claim checking, per-action screenshots instead
-of per-page, and authenticated-site crawling.
+```bash
+cd api
+python -m agents.orchestrator.agent_ingest       # proves claim extraction + the guard catching an unsupported claim
+python -m agents.orchestrator.agent_qa           # proves QA can genuinely FAIL
+python -m agents.orchestrator.agent_release      # proves selective rebuild (2 stale, not 3)
+```
 
-## Team
+## Team & AI assistance
 
-Built by the ADIP-agent team (originally an autonomous product-intelligence platform)
-and rebuilt around fact-verified generation for this submission.
-
-## AI assistance
-
-This project was built with substantial assistance from Claude (Anthropic), used for
+Built by the same team as [Veridemo](https://github.com/Ariya-rithvik/demo). This
+project was built with substantial assistance from Claude (Anthropic), used for
 implementation, debugging, and refactoring. Disclosed per hackathon rules.

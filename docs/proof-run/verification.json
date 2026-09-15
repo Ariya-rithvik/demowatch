@@ -1,0 +1,109 @@
+{
+  "status": "PASSED",
+  "verifiable": true,
+  "facts_available": 60,
+  "total_claims": 3,
+  "verified": 3,
+  "failed": 0,
+  "uncited": 0,
+  "dangling_citations": 0,
+  "unverifiable_sections": 0,
+  "structural_checks": 8,
+  "structural_failures": 0,
+  "total_checks": 11,
+  "pass_rate": "100.0%",
+  "checks": [
+    {
+      "check": "claim_supported",
+      "source": "demo",
+      "ref": "demo#scene1",
+      "claim": "This is httpbin.org. Other Utilities.",
+      "cited_ids": [
+        "f_0f944ad75a95eff9"
+      ],
+      "unknown_ids": [],
+      "unsupported_numbers": [],
+      "passed": true,
+      "severity": "none",
+      "reason": "claim states no numbers, so only its citation was checked"
+    },
+    {
+      "check": "claim_supported",
+      "source": "demo",
+      "ref": "demo#scene2",
+      "claim": "Select Expand operation.",
+      "cited_ids": [
+        "f_22f3e65529866129",
+        "f_0f944ad75a95eff9",
+        "f_166442e1e04bead5"
+      ],
+      "unknown_ids": [],
+      "unsupported_numbers": [],
+      "passed": true,
+      "severity": "none",
+      "reason": "claim states no numbers, so only its citation was checked"
+    },
+    {
+      "check": "claim_supported",
+      "source": "demo",
+      "ref": "demo#scene3",
+      "claim": "That's the main path through httpbin.org.",
+      "cited_ids": [
+        "f_0f944ad75a95eff9"
+      ],
+      "unknown_ids": [],
+      "unsupported_numbers": [],
+      "passed": true,
+      "severity": "none",
+      "reason": "claim states no numbers, so only its citation was checked"
+    },
+    {
+      "check": "screenshot_exists",
+      "target": "https://httpbin.org/",
+      "passed": true,
+      "reason": "file present"
+    },
+    {
+      "check": "screenshot_exists",
+      "target": "https://httpbin.org/#/HTTP_Methods",
+      "passed": true,
+      "reason": "file present"
+    },
+    {
+      "check": "screenshot_exists",
+      "target": "https://httpbin.org/#/",
+      "passed": true,
+      "reason": "file present"
+    },
+    {
+      "check": "screenshot_exists",
+      "target": "https://httpbin.org/#/Auth",
+      "passed": true,
+      "reason": "file present"
+    },
+    {
+      "check": "screenshot_exists",
+      "target": "https://httpbin.org/#/",
+      "passed": true,
+      "reason": "file present"
+    },
+    {
+      "check": "screenshot_exists",
+      "target": "https://httpbin.org/#/Status_codes",
+      "passed": true,
+      "reason": "file present"
+    },
+    {
+      "check": "screenshot_exists",
+      "target": "https://httpbin.org/#/",
+      "passed": true,
+      "reason": "file present"
+    },
+    {
+      "check": "screenshot_exists",
+      "target": "https://httpbin.org/#/Request_inspection",
+      "passed": true,
+      "reason": "file present"
+    }
+  ]
+}

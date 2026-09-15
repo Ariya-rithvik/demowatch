@@ -9,6 +9,7 @@
       {
         "name": "veridemo",
         "enable_tools": ["@all"],
+        "_comment_approval": "crawl_product is annotated destructive at the MCP layer because interact=True can click/type on the target, but it is NOT gated here: gating it would pause approval on every read-only crawl too (the harness gates by tool name, not by argument), which would break the propose/reject/revise loop this agent is built to demonstrate. Read-only is the default and is enforced in code (_run_crawl asserts zero actions executed and refuses the crawl otherwise). The instructions below tell the model to only ever request interact=True when the user has explicitly said the site is theirs.",
         "require_approval_for_tools": ["publish_demo"]
       }
     ],

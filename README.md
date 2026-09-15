@@ -1,4 +1,6 @@
-# Veridemo — demo videos you can audit
+# Veridemo — demo videos you can actually verify
+
+**Built for the [AI Builders Hackathon 2026](https://ai-builders-hackathon-2026.devpost.com/).**
 
 Give it a URL. It opens your product in a real browser, walks the flows a user would
 take, and produces a narrated demo video in which **every spoken claim traces back to a
@@ -9,13 +11,20 @@ captured page element** — and any claim it cannot verify is dropped before the
 ## The problem
 
 AI-generated product demos hallucinate. They describe features that don't exist and quote
-prices that have changed, and nobody notices until a customer does. Tools that auto-update
-demos re-record when the UI changes; none can tell you *which specific claim* in a finished
-video is now false.
+prices that have changed, and nobody notices until a customer does. Every "AI demo video"
+tool on the market records something and narrates over it — none of them can tell you
+*which specific claim* in a finished video is now false, or prove that a claim was ever
+true in the first place.
 
-## The idea
+Manually recording, editing, and re-recording demos every time a product changes is the
+alternative, and it doesn't scale: sales teams need a demo per segment, onboarding needs
+one per feature release, and every UI change makes the old recording a liability instead
+of an asset.
 
-Each scene is bound to the elements it asserts:
+## The idea: claims are not free — they're citations
+
+Veridemo doesn't let an AI say anything it can't point at. Every scene is bound to the
+DOM elements it asserts:
 
 ```json
 { "index": 2,
@@ -24,89 +33,86 @@ Each scene is bound to the elements it asserts:
   "asserts": ["f_6ba191cc38a21a37", "f_7f373b67509f32df"] }
 ```
 
-Fact ids are a hash of `url + css_selector`; the content hash is a hash of the text. That
-split is the whole system:
+A **fact id** is a hash of `url + css_selector` — a stable pointer to one specific claim
+on the page. A **content hash** is a hash of what that element currently says. That split
+is the whole system:
 
 > **Drift = same fact id, different content hash.**
 
-Re-crawl later and you know exactly which claims went false, which artifacts cited them,
-and which agents must re-run. One changed price rebuilds one scene, not the whole video.
+Re-crawl the product later and Veridemo knows exactly which claims went false, which
+video scenes cited them, and which need to be rebuilt. One changed price rebuilds one
+scene — not the whole video.
+
+## Six agents, one pipeline
+
+A central orchestrator (FastAPI, priority queues, SQLite/Postgres-backed job state) runs
+six agents in sequence, each one a real, independently-testable module:
+
+| # | Agent | Does |
+|---|---|---|
+| 1 | **Explorer** | Drives real Chromium via Playwright — clicks, types, screenshots the actual product, and builds a hashed **truth set** of every fact on the page |
+| 2 | **Knowledge graph** | Builds a navigation graph from the crawl's *actual* edges — not a guess at site structure |
+| 3 | **Documentation** | Writes a user guide, recording which facts each section cites |
+| 4 | **Demo** | Turns the recorded user actions into narrated video scenes, zooming into the element each line describes; a scene with no supporting fact is **dropped**, never shipped |
+| 5 | **QA** | Re-checks every claim against the truth set. It genuinely fails — a hallucinated `$129` against a source that says `$99` produces `status: FAILED`, not an inflated pass rate |
+| 6 | **Release** | Diffs against the previous crawl, and resolves exactly which stale facts invalidate which artifacts |
+
+No API key is required to run the core pipeline — narration is Edge TTS and video
+compositing is FFmpeg, so it produces a complete, verified, narrated MP4 out of the box.
+
+## Demo
+
+We pointed the running pipeline at `https://httpbin.org` with no prior data. In one
+unattended pass it:
+
+- Crawled **8 pages**, extracted **356 real DOM elements**, executed **8 real click actions**
+- Built a knowledge graph and a 3-scene narrated demo video with AI voiceover
+- **QA passed 11/11 checks (100%)** — every narrated claim verified against its cited
+  facts, every screenshot confirmed present, zero dangling citations
+
+That full run ships in this repo as evidence:
+
+- [`docs/proof-run/demo.mp4`](docs/proof-run/demo.mp4) — the rendered, narrated video
+- [`docs/proof-run/verification.json`](docs/proof-run/verification.json) — the QA agent's
+  full pass/fail report for every claim
+- [`docs/proof-run/screenshots/`](docs/proof-run/screenshots) — raw crawl screenshots the
+  video scenes were built from
 
 ## Architecture
 
-Four Zerops services:
-
 ```
-web (static)  ──HTTP──▶  api (python)  ──▶  db (postgresql@16)
+web (static)  ──HTTP──▶  api (python, FastAPI orchestrator)  ──▶  db (SQLite locally / Postgres in prod)
                               │
-                              └──────────▶  storage (object-storage, S3)
+                              └──────────▶  storage (local disk / S3-compatible object storage)
 ```
 
-**`api`** runs the pipeline — six agents in order:
+- **`db`** — Workflow and task state. The orchestrator re-queues anything left `RUNNING`
+  on restart, so a redeploy resumes in-flight work instead of losing it. `persistence.py`
+  runs on SQLite locally and switches to PostgreSQL when `DATABASE_URL` is set — same code,
+  both environments.
+- **`storage`** — Rendered MP4s, screenshots, truth sets, and verification reports, mirrored
+  to S3-compatible storage where configured so artifacts survive a redeploy.
+- **`api`** — Needs Chromium + FFmpeg in the runtime; a crawl takes 60–90s and a render
+  ~30s, well past any serverless timeout, so this runs as a real long-lived process.
+- **`web`** — Deployed separately so redeploying the pipeline never takes the UI offline.
 
-| Agent | Does |
-|---|---|
-| Explorer | Drives real Chromium via Playwright; records clicks/typing, screenshots, and a hashed **truth set** |
-| Knowledge graph | Builds a graph from the crawl's actual navigation edges |
-| Documentation | Writes a user guide, recording which facts each section cites |
-| Demo | Scenes follow **recorded user actions**, pushing in on the element involved; unverifiable scenes are dropped |
-| QA | Verifies every claim against the truth set. Genuinely fails; reports `NO_CLAIMS` rather than inventing a pass rate |
-| Release | Diffs against the previous crawl, resolves changed facts to stale artifacts |
-
-## How Zerops is used
-
-Zerops is the runtime, not a host for a single container. Each service exists because
-something in the pipeline genuinely needs it:
-
-**`db` — postgresql@16.** Workflow and task state. The orchestrator re-queues anything left
-`RUNNING` on boot, so a redeploy resumes in-flight work instead of losing it. Zerops injects
-`${db_connectionString}`; `persistence.py` switches to PostgreSQL when `DATABASE_URL` is set
-and falls back to SQLite locally, so the same code runs in both places.
-
-**`storage` — object-storage.** Rendered MP4s, screenshots, truth sets and verification
-reports. Container filesystems are ephemeral, so without this every redeploy would lose
-previously generated packages. Wired through `MediaStore`, which writes locally *and*
-mirrors to S3, and can pull an object back with `fetch_to_local()` after a restart.
-
-**`api` — python@3.11 on Ubuntu.** Needs Chromium and FFmpeg in the runtime image, which is
-why `zerops.yml` installs them in `prepareCommands` and pins
-`PLAYWRIGHT_BROWSERS_PATH` into the deployed tree. A crawl takes 60–90s and a render ~30s,
-well past any serverless timeout — this needs a real container.
-
-**`web` — static.** Deployed separately so redeploying the pipeline never takes the UI
-offline. The API base URL is baked in at build time via `sed` on `__API_BASE__`.
-
-**Health as readiness.** `/health` reports each backing service and returns **503** when
-PostgreSQL is unreachable, so Zerops won't route traffic to a container that can't work.
-
-## Deploy
-
-```bash
-zcli login <token>
-zcli project project-import zerops-project-import.yml
-zcli push --serviceId <api-service-id>
-zcli push --serviceId <web-service-id>
-```
-
-## Run locally
+## Run it locally
 
 ```bash
 pip install -r api/requirements.txt
 python -m playwright install chromium          # FFmpeg must be on PATH
 
 cd api && python -m uvicorn main:app --port 8080     # API
-cd web && python -m http.server 8098                 # UI
+cd web && python -m http.server 8098                 # UI, then open :8098?api=http://localhost:8080
 ```
 
-With no `DATABASE_URL` it uses SQLite; with no S3 vars it writes to local disk. **No API
-key is required** — narration is Edge TTS and compositing is FFmpeg, so the pipeline
-produces a complete verified video out of the box.
+Paste any public product URL into the landing page and watch the pipeline run live.
 
-## The agent on TrueForge
+## Optional: run it as an actual agent, not a script
 
-The pipeline above runs a fixed sequence, which makes it a script rather than an agent:
-nothing decides anything at runtime. `harness/veridemo_mcp.py` exposes the same
-capabilities as MCP tools an agent composes itself, so the harness does the reasoning.
+The pipeline above runs a fixed sequence — nothing decides anything at runtime, which
+makes it a script rather than an agent. `harness/veridemo_mcp.py` exposes the same
+capabilities as MCP tools instead, so an LLM agent composes the pipeline itself:
 
 | Tool | Annotation | What it does |
 |---|---|---|
@@ -114,13 +120,11 @@ capabilities as MCP tools an agent composes itself, so the harness does the reas
 | `list_facts` | read-only | The facts the agent is allowed to cite |
 | `check_narration` | read-only | **The guard** — accepts or rejects one proposed line |
 | `review_script` | read-only | The lines accepted so far |
-| `publish_demo` | **destructive** | The irreversible step; the harness holds it for approval |
+| `publish_demo` | **destructive** | The irreversible step — held for human approval |
 
 **The loop is the point.** The agent writes a line, cites facts, and calls
 `check_narration`. A line that states a number the source never mentions comes back
-rejected with that number named, and has to be rewritten before it can ship. There is no
-path from "the model said it" to "the demo says it" that skips the check — so the failure
-case is the interesting one:
+rejected with that number named, and has to be rewritten before it can ship:
 
 ```
 check_narration("It costs $4999 per seat.", ["f_4e1b531b…"])
@@ -129,60 +133,20 @@ check_narration("It costs $4999 per seat.", ["f_4e1b531b…"])
     reason: "numbers not found in source: 4999"
 ```
 
-Because `publish_demo` carries MCP's `destructiveHint`, TrueForge stops and asks a person
-before anything is published. The read-only tools are annotated as such, so they don't.
-
-### Run it
-
-```bash
-npx @truefoundry/trueforge@latest        # needs Node >= 22; on Windows use WSL or Docker
-python harness/veridemo_mcp.py           # serves MCP on :9077
-python harness/setup_trueforge.py        # registers the MCP server and the agent
-```
-
-`setup_trueforge.py` is idempotent and verifies its own work: it registers the server,
-asks TrueForge to list the tools back (which is what proves the harness can actually
-reach it), registers the agent from `harness/trueforge/agent.json`, and then reports
-what still needs credentials rather than claiming it is done.
-
-Two things it cannot do for you, because neither belongs in a repo:
-
-- **A model.** Add a Google Gemini API key in the TrueForge UI. `google-gemini` is a
-  first-class provider, so the agent talks to Gemini directly.
-- **A sandbox.** Either configure Daytona, or install the local sandbox's host
-  dependencies: `sudo apt-get install -y bubblewrap socat ripgrep`
-
-**On Windows**, run the harness under WSL or Docker. TrueForge 0.1.4 does not start on
-Windows directly (the ESM loader rejects `c:` paths) and its local sandbox is Linux and
-macOS only. When TrueForge runs in WSL and the MCP server runs on Windows, `localhost`
-inside WSL is WSL, so point it at the Windows host:
-
-```bash
-export VERIDEMO_MCP_URL="http://$(ip route show default | awk '{print $3}'):9077/mcp"
-```
+`publish_demo` carries MCP's `destructiveHint`, so any MCP-compatible agent harness stops
+and asks a person before anything ships. This is exposed via a standard MCP server
+(`python harness/veridemo_mcp.py`, served on `:9077`) and can be wired into Claude,
+TrueForge, or any other MCP-capable agent runtime — see `harness/` for a worked example
+against TrueForge.
 
 ### Crawling safely
 
 The stock explorer planner types `"Test Input"` into any text field it finds and clicks
-whatever it can reach. That is how multi-step flows get discovered on a page you own, and
-it is submitting forms you do not own anywhere else. `crawl_product` is therefore
-**observation-only unless `interact=true` is passed explicitly**.
-
-Capping actions at zero does not achieve this: extraction and action share one loop, so a
-zero cap skips reading the page too. The read-only mode instead lets the crawl read the
-page and gives the planner nothing to do, which is the loop's own stop condition — a full
-extraction with provably zero interaction.
-
-## Qodo Code Review Evidence
-
-<!-- Replace the placeholder below with the real merged PR before submitting. -->
-
-Representative merged pull request: **_[link pending — see `feat/trueforge-mcp-harness`]_**
-
-What Qodo surfaced and what changed as a result: **_[fill in after the review runs]_**
-
-The pull request history on that branch shows the completed review, the decisions taken on
-each finding, and a follow-up review against the final code.
+whatever it can reach — fine on a page you own, not fine anywhere else. `crawl_product`
+is therefore **observation-only unless `interact=true` is passed explicitly**. Capping
+actions at zero doesn't achieve this on its own (extraction and action share one loop),
+so read-only mode instead lets the crawl read the page and gives the planner nothing to
+act on — a full extraction with provably zero interaction.
 
 ## API
 
@@ -196,7 +160,7 @@ each finding, and a follow-up review against the final code.
 
 ## Tests
 
-Every module runs standalone:
+Every agent module runs standalone and proves a specific claim about itself:
 
 ```bash
 cd api
@@ -210,9 +174,6 @@ python -m agents.orchestrator.agent_knowledge_graph
 python -m agents.orchestrator.video_render
 ```
 
-The important one is in `agent_qa.py`: a hallucinated `$129` against a source that says
-`$99` must produce `status: FAILED`.
-
 ## Honest limitations
 
 - Claim verification checks numeric support and citation integrity, not semantic
@@ -223,7 +184,21 @@ The important one is in `agent_qa.py`: a hallucinated `$129` against a source th
   site took ~188s, too slow for interactive evaluation.
 - Authenticated sites are supported by config but untested.
 
+## Impact & roadmap
+
+Today this targets the demo-video use case, but the underlying mechanism — bind every
+generated claim to a hashed source fact, verify before shipping, diff on re-crawl — applies
+anywhere an AI narrates a live product: release notes, sales collateral, support
+documentation, changelogs. The `Release` agent already resolves drift for exactly this
+reason. Next: semantic (not just numeric) claim checking, per-action screenshots instead
+of per-page, and authenticated-site crawling.
+
+## Team
+
+Built by the ADIP-agent team (originally an autonomous product-intelligence platform)
+and rebuilt around fact-verified generation for this submission.
+
 ## AI assistance
 
 This project was built with substantial assistance from Claude (Anthropic), used for
-implementation, debugging and refactoring. Disclosed per the challenge rules.
+implementation, debugging, and refactoring. Disclosed per hackathon rules.

@@ -105,6 +105,24 @@ Engine: deterministic
 
 That's the whole product, working end to end, on real data.
 
+## Submission materials
+
+- [`docs/submission/veridemo_watch_submission.mp4`](docs/submission/veridemo_watch_submission.mp4)
+  — the 2:48 demo video
+- [`docs/submission/veridemo_watch_deck.pdf`](docs/submission/veridemo_watch_deck.pdf) —
+  the 10-slide deck
+
+```bash
+python tools/build_submission_video.py   # -> veridemo_watch_submission.mp4
+python tools/build_deck.py               # -> veridemo_watch_deck.pdf
+```
+
+Neither is hand-assembled. Both builders **execute `examples/watch_demo.py` and capture
+its actual stdout**, then replay it on screen line by line — so the PASS/PASS/FAIL you
+see in the video is the run that happened while the video was being built, not a
+screenshot of one that happened once. If the audit ever stopped catching the stale 499,
+the video would visibly stop showing it.
+
 ## Run the full pipeline locally
 
 ```bash
